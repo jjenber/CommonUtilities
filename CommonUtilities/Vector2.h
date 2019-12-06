@@ -1,0 +1,160 @@
+#pragma once
+#include <math.h>
+#ifdef _DEBUG
+#include <cassert>
+#endif // _DEBUG
+
+namespace CommonUtilities
+{
+	template <class T>
+	class Vector2
+	{
+	public:
+		T x;
+		T y;
+
+		Vector2<T>();
+		Vector2<T>(const T& aX, const T& aY);
+		Vector2<T>(const Vector2<T>& aVector) = default;
+		Vector2<T>& operator=(const Vector2<T>& aVector2) = default;
+
+		~Vector2<T>() = default;
+
+		T LengthSqr() const;
+		T Length() const;
+
+		Vector2<T> GetNormalized() const;
+		void Normalize();
+
+		T Dot(const Vector2<T>& aVector) const;
+	private:
+	};
+
+	template <class T> Vector2<T> operator+(const Vector2<T>& aVector0, const Vector2<T>& aVector1);
+	template <class T> Vector2<T> operator-(const Vector2<T>& aVector0, const Vector2<T>& aVector1);
+	template <class T> Vector2<T> operator*(const Vector2<T>& aVector, const T& aScalar);
+	template <class T> Vector2<T> operator*(const T& aScalar, const Vector2<T>& aVector);
+	template <class T> Vector2<T> operator/(const Vector2<T>& aVector, const T& aScalar);
+	template <class T> void operator+=(Vector2<T>& aVector0, const Vector2<T>& aVector1);
+	template <class T> void operator-=(Vector2<T>& aVector0, const Vector2<T>& aVector1);
+	template <class T> void operator*=(Vector2<T>& aVector, const T& aScalar);
+	template <class T> void operator/=(Vector2<T>& aVector, const T& aScalar);
+
+#pragma region MemberDefinitions
+
+	template<class T>
+	inline Vector2<T>::Vector2() : Vector2(0, 0)
+	{}
+
+	template<class T>
+	inline Vector2<T>::Vector2(const T& aX, const T& aY) : x(aX), y(aY)
+	{}
+
+	template<class T>
+	inline T Vector2<T>::LengthSqr() const
+	{
+		return (x * x) + (y * y);
+	}
+
+	template<class T>
+	inline T Vector2<T>::Length() const
+	{
+		return sqrt((x * x) + (y * y));
+	}
+
+	template<class T>
+	inline Vector2<T> Vector2<T>::GetNormalized() const
+	{
+		const T magnitude = (x * x) + (y * y);
+
+#ifdef _DEBUG
+		assert(magnitude != 0 && "Tried to normalize a null vector ");
+#endif // _DEBUG
+
+		const T inversedMagnitude = T(1) / sqrt(magnitude);
+		return Vector2<T>(x * inversedMagnitude, y * inversedMagnitude);
+	}
+
+	template<class T>
+	inline void Vector2<T>::Normalize()
+	{
+		const T magnitude = (x * x) + (y * y);
+
+#ifdef _DEBUG
+		assert(magnitude != 0 && "Tried to normalize a null vector ");
+#endif // _DEBUG
+
+		const T inversedMagnitude = T(1) / sqrt(magnitude);
+		x *= inversedMagnitude; 
+		y *= inversedMagnitude;
+	}
+
+	template<class T>
+	inline T Vector2<T>::Dot(const Vector2<T>& aVector) const
+	{
+		return (x * aVector.x) + (y * aVector.y);
+	}
+
+#pragma endregion MemberDefinitions
+
+#pragma region OperatorDefinitions
+	template <class T>
+	Vector2<T> operator+(const Vector2<T>& aVector0, const Vector2<T>& aVector1)
+	{
+		return Vector2<T>(aVector0.x + aVector1.x, aVector0.y + aVector1.y);
+	}
+
+	template<class T>
+	Vector2<T> operator-(const Vector2<T>& aVector0, const Vector2<T>& aVector1)
+	{
+		return Vector2<T>(aVector0.x - aVector1.x, aVector0.y - aVector1.y);
+	}
+
+	template <class T>
+	Vector2<T> operator*(const Vector2<T>& aVector, const T& aScalar)
+	{
+		return Vector2<T>(aVector.x * aScalar, aVector.y * aScalar);
+	}
+
+	template <class T>
+	Vector2<T> operator*(const T& aScalar, const Vector2<T>& aVector)
+	{
+		return aVector * aScalar;
+	}
+
+	template <class T>
+	Vector2<T> operator/(const Vector2<T>& aVector, const T& aScalar)
+	{
+		return aVector * (1 / aScalar);
+	}
+
+	template <class T>
+	void operator+=(Vector2<T>& aVector0, const Vector2<T>& aVector1)
+	{
+		aVector0.x += aVector1.x;
+		aVector0.y += aVector1.y;
+	}
+
+	template <class T>
+	void operator-=(Vector2<T>& aVector0, const Vector2<T>& aVector1)
+	{
+		aVector0.x -= aVector1.x;
+		aVector0.y -= aVector1.y;
+	}
+
+	template <class T>
+	void operator*=(Vector2<T>& aVector, const T& aScalar)
+	{
+		aVector.x *= aScalar;
+		aVector.y *= aScalar;
+	}
+
+	template <class T>
+	void operator/=(Vector2<T>& aVector, const T& aScalar)
+	{
+		const T inv = (1 / aScalar);
+		aVector.x *= inv;
+		aVector.y *= inv;
+	}
+#pragma endregion OperatorDefinitions
+}
