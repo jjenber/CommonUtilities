@@ -3,6 +3,7 @@
     #error assert.h not for CRT internal use
 #endif
 
+#include "DL_StackWalker.h"
 #include <corecrt.h>
 
 _CRT_BEGIN_C_HEADER
@@ -20,6 +21,7 @@ _ACRTIMP void __cdecl _wassert(
 #define assert(expression) (void)(                                                       \
         (!!(expression)) ||                                                              \
         (_wassert(_CRT_WIDE(#expression), _CRT_WIDE(__FILE__), (unsigned)(__LINE__)), 0) \
-    )
+    ); \
+	if((expression) == false) { DL_Debug::StackWalker sw; sw.ShowCallstack(); }
 
 _CRT_END_C_HEADER

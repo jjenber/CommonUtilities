@@ -24,9 +24,21 @@
     <ClInclude Include="DL_assert.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DL_StackWalker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StackWalker\StackWalker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DL_Debug.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DL_StackWalker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StackWalker\StackWalker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

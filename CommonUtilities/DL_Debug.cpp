@@ -12,6 +12,12 @@ namespace DL_Debug
 
 	void Debug::Create(const std::string& aFile)
 	{
+		bool b = ourInstance == nullptr && "There is already an instance of Debug.";
+		if (b)
+		{
+			int i = 0;
+			(void)i;
+		}
 		assert(ourInstance == nullptr && "There is already an instance of Debug.");
 		ourInstance = new Debug();
 		ourInstance->myFile.open(aFile);
@@ -48,6 +54,11 @@ namespace DL_Debug
 		PrintTimeStamp();
 		PrintMessageFormatInternal(aMessage, args);
 		va_end(args);
+	}
+
+	void Debug::PrintMessageNoFormatting(const char* aString)
+	{
+		ourInstance->myFile << aString;
 	}
 
 	void Debug::DebugMessage(const int aLine, const char* aFileName, const char* aFormattedString, ...)

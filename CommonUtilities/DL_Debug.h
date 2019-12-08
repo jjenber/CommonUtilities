@@ -12,8 +12,9 @@
 
 #define DL_PRINT(_PRINTMESSAGE)      (Debug::GetInstance()->PrintMessage(_PRINTMESSAGE))
 #define DL_DEBUG(_PRINTMESSAGE, ...) (Debug::GetInstance()->PrintMessageFormat(_PRINTMESSAGE, __VA_ARGS__))
+#define DL_PRINT_NO_FORMATTING(_PRINTMESSAGE) (Debug::GetInstance()->PrintMessageNoFormatting(_PRINTMESSAGE))
 
-#define DL_META_INFO_CSTR (std::string(__FUNCTION__) + "() (at " + __FILE__ + ":" + std::to_string(__LINE__) + ")").c_str()
+#define DL_META_INFO_CSTR (std::string(__FUNCTION__) + "() (at " + __FILE__ + ":" + std::to_string(__LINE__) + ")").c_str() // TODO: sstream this
 #define LOG_TIME_FORMAT "%H:%M:%S"
 
 namespace DL_Debug
@@ -29,6 +30,7 @@ namespace DL_Debug
 		void				AssertMessage(bool aStatement, const char* aMessage, const char* aDLMetaInfo);
 		void				PrintMessage(const char* aMessage);
 		void				PrintMessageFormat(const char* aMessage, ...);
+		void				PrintMessageNoFormatting(const char* aString);
 		void				DebugMessage(const int aLine, const char* aFileName, const char* aFormattedString, ...);
 	private:
 		void				PrintTimeStamp() const;

@@ -85,6 +85,8 @@ namespace DebugLogger
 		{
 			Debug::Create("TestLog_Macro_DL_ASSERT.txt");
 			DL_ASSERT(true, "Macro_DL_ASSERT_message_statement");
+			// Uncomment to print callstack after assertion
+			//DL_ASSERT("This is a failed assertion!");
 			Debug::Destroy();
 		}
 
