@@ -11,9 +11,9 @@
 #define DL_ASSERT_M_STATEMENT(_STATEMENT, _ASSERTMESSAGE) Debug::GetInstance()->AssertMessage(_STATEMENT, _ASSERTMESSAGE, DL_META_INFO_CSTR)
 
 #define DL_PRINT(_PRINTMESSAGE)      (Debug::GetInstance()->PrintMessage(_PRINTMESSAGE))
-#define DL_DEBUG(_PRINTMESSAGE, ...) (Debug::GetInstance()->PrintMessageFormat(_PRINTMESSAGE, ...))
+#define DL_DEBUG(_PRINTMESSAGE, ...) (Debug::GetInstance()->PrintMessageFormat(_PRINTMESSAGE, __VA_ARGS__))
 
-#define DL_META_INFO_CSTR (std::string(__FUNCTION__) + "() (at " + __FILE__ + ":" + std::to_string(__LINE__) + ")").c_str() // TODO: sstream this
+#define DL_META_INFO_CSTR (std::string(__FUNCTION__) + "() (at " + __FILE__ + ":" + std::to_string(__LINE__) + ")").c_str()
 #define LOG_TIME_FORMAT "%H:%M:%S"
 
 namespace DL_Debug
@@ -30,9 +30,9 @@ namespace DL_Debug
 		void				PrintMessage(const char* aMessage);
 		void				PrintMessageFormat(const char* aMessage, ...);
 		void				DebugMessage(const int aLine, const char* aFileName, const char* aFormattedString, ...);
-		void				DebugMessage(const char* aDLMetaInfo, const char* aFormattedString, ...);
 	private:
-		std::string			GetTimeStamp() const;
+		void				PrintTimeStamp() const;
+		void				PrintMessageFormatInternal(const char* aMessage, va_list aArgsList);
 
 		Debug()				= default;
 		~Debug()			= default;

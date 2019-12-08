@@ -37,32 +37,43 @@ namespace DL_Debug
 
 	void Debug::PrintMessage(const char* aMessage)
 	{
-		ourInstance->myFile << "\n" << GetTimeStamp() << (aMessage) << std::endl;
+		PrintTimeStamp();
+		ourInstance->myFile << (aMessage) << '\n' << std::endl;
 	}
 
 	void Debug::PrintMessageFormat(const char* aMessage, ...)
 	{
-		char buffer[256];
 		va_list args;
 		va_start(args, aMessage);
-		std::vsnprintf(buffer, sizeof(buffer), aMessage, args);
+		PrintTimeStamp();
+		PrintMessageFormatInternal(aMessage, args);
 		va_end(args);
-
-		PrintMessage({ buffer });
 	}
 
 	void Debug::DebugMessage(const int aLine, const char* aFileName, const char* aFormattedString, ...)
 	{
-		aLine; aFileName; aFormattedString;
+		va_list args;
+		va_start(args, aFormattedString);
+		PrintTimeStamp();
+		PrintMessageFormatInternal(aFormattedString, args);
+		ourInstance->myFile << std::string("(at ") + aFileName + ":" + std::to_string(aLine) + ")\n";
+		va_end(args);
 	}
 
-	std::string Debug::GetTimeStamp() const
+	void Debug::PrintTimeStamp() const
 	{
 		const auto now = std::chrono::system_clock::now();
 		const auto time_T = std::chrono::system_clock::to_time_t(now);
 		char timeBuffer[26];
 		ctime_s(timeBuffer, size_t(26), &time_T);
 		std::string str(std::begin(timeBuffer) + 11, std::end(timeBuffer) - 7);
-		return std::string("[") + str + "] ";
+		ourInstance->myFile << '[' << str << "] ";
+	}
+
+	void Debug::PrintMessageFormatInternal(const char* aMessage, va_list aArgsList)
+	{
+		char buffer[256];
+		std::vsnprintf(buffer, sizeof(buffer), aMessage, aArgsList);
+		ourInstance->myFile << buffer << std::endl;
 	}
 }

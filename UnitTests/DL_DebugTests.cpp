@@ -39,7 +39,7 @@ namespace DebugLogger
 		}
 		TEST_METHOD(CreateLogFileUserName)
 		{
-			const char* filename = "MyLogfile.txt";
+			const char* filename = "TestLog_MyLogfile.txt";
 			remove(filename);
 			Debug::Create(filename);
 			auto stream = std::ifstream(filename);
@@ -47,7 +47,6 @@ namespace DebugLogger
 			Assert::IsFalse(stream.fail());
 			stream.close();
 			Debug::Destroy();
-			remove(filename);
 		}
 	};
 
@@ -55,23 +54,54 @@ namespace DebugLogger
 	{
 		TEST_METHOD(AssertMessageStatement)
 		{
-			Debug::Create("TestsLog.txt"); // Destroy in last test
-			Debug::GetInstance()->AssertMessage(true, "AssertMessageStatement", DL_META_INFO_CSTR);
+			Debug::Create("TestLog_AssertMessageStatement.txt");
+			Debug::GetInstance()->AssertMessage(true, "This is a message!", DL_META_INFO_CSTR);
+			Debug::GetInstance()->AssertMessage(true, "This is another message!", DL_META_INFO_CSTR);
+			Debug::Destroy();
 		}
 
 		TEST_METHOD(PrintMessageFormatted)
 		{
+			Debug::Create("TestLog_PrintMessageFormatted.txt");
 			Debug::GetInstance()->PrintMessageFormat("PrintMessageFormatted (float): %f", 2.34f);
 			Debug::GetInstance()->PrintMessageFormat("PrintMessageFormatted (int): %i", 4);
 			Debug::GetInstance()->PrintMessageFormat("PrintMessageFormatted (double): %f", 0.54363654);
+			Debug::Destroy();
+		}
+
+		TEST_METHOD(DebugMessage)
+		{
+			Debug::Create("TestLog_DebugMessage.txt");
+			Debug::GetInstance()->DebugMessage(__LINE__, __FILE__, "DebugMessage (float): %f", 2.34f);
+			Debug::GetInstance()->DebugMessage(__LINE__, __FILE__, "DebugMessage (int): %i", 4);
+			Debug::GetInstance()->DebugMessage(__LINE__, __FILE__, "DebugMessage (double): %f", 0.54363654);
+			Debug::Destroy();
 		}
 	};
 
 	TEST_CLASS(Macros)
 	{
-		TEST_METHOD(Macro_DL_ASSERT_message)
+		TEST_METHOD(Macro_DL_ASSERT)
 		{
+			Debug::Create("TestLog_Macro_DL_ASSERT.txt");
 			DL_ASSERT(true, "Macro_DL_ASSERT_message_statement");
+			Debug::Destroy();
+		}
+
+		TEST_METHOD(Macro_DL_PRINT)
+		{
+			Debug::Create("TestLog_Macro_DL_PRINT.txt");
+			DL_PRINT("This is a print macro.");
+			DL_PRINT("This is another print macro.");
+			Debug::Destroy();
+		}
+
+		TEST_METHOD(Macro_DL_DEBUG)
+		{
+			Debug::Create("TestLog_Macro_DL_DEBUG.txt");
+			DL_DEBUG("This is a debug macro (float):%f", 3.5f);
+			DL_DEBUG("This is a debug macro (int):%i", 5849);
+			DL_DEBUG("This is a debug macro (string):%s", "a string");
 			Debug::Destroy();
 		}
 	};
