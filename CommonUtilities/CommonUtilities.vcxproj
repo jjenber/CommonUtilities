@@ -15,12 +15,11 @@
     <ClInclude Include="DL_Debug.h" />
     <ClInclude Include="DL_StackWalker.h" />
     <ClInclude Include="Macros.h" />
+    <ClInclude Include="RapidJSON.h" />
     <ClInclude Include="StackWalker\StackWalker.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DL_Debug.cpp" />
-    <ClCompile Include="DL_StackWalker.cpp" />
-    <ClCompile Include="StackWalker\StackWalker.cpp" />
+    <ClCompile Include="RapidJSON.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

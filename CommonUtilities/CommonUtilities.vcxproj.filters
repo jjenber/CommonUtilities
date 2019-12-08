@@ -30,15 +30,12 @@
     <ClInclude Include="StackWalker\StackWalker.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="RapidJSON.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DL_Debug.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DL_StackWalker.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="StackWalker\StackWalker.cpp">
+    <ClCompile Include="RapidJSON.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

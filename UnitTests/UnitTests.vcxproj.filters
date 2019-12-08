@@ -18,7 +18,7 @@
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DL_DebugTests.cpp">
+    <ClCompile Include="RapidjsonTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
