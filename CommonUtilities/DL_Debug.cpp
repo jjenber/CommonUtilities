@@ -1,10 +1,6 @@
 #include "DL_Debug.h"
-#include <cassert>
 #include <chrono>
 #include <ctime>
-#include <fstream>
-#include <stdarg.h>
-#include <string>
 
 namespace DL_Debug
 {
@@ -30,13 +26,18 @@ namespace DL_Debug
 
 	void Debug::AssertMessage(bool aStatement, const char* aFileName, int aLine, const char* aFunctionName, const char* aMessage)
 	{
-		PrintMessage((std::string(aMessage) + aFileName + aFunctionName + std::to_string(aLine)).c_str());
-		assert(aStatement);
+		AssertMessage(aStatement, aMessage, (std::string(aMessage) + aFileName + aFunctionName + std::to_string(aLine)).c_str());
+	}
+
+	void Debug::AssertMessage(bool aStatement, const char* aMessage, const char* aDLmetaInfo)
+	{
+		PrintMessage((std::string(aMessage) + "\n" + aDLmetaInfo).c_str());
+		assert(aStatement && aMessage);
 	}
 
 	void Debug::PrintMessage(const char* aMessage)
 	{
-		ourInstance->myFile << GetTimeStamp() << (aMessage) << std::endl;
+		ourInstance->myFile << "\n" << GetTimeStamp() << (aMessage) << std::endl;
 	}
 
 	void Debug::PrintMessageFormat(const char* aMessage, ...)

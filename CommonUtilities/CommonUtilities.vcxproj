@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DL_assert.h" />
     <ClInclude Include="DL_Debug.h" />
     <ClInclude Include="Macros.h" />
   </ItemGroup>

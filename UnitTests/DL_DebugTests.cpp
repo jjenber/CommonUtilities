@@ -55,17 +55,15 @@ namespace DebugLogger
 	{
 		TEST_METHOD(AssertMessageStatement)
 		{
-			Debug::Create();
-			//Debug::GetInstance()->AssertMessage(true, "Hello");
-			//Debug::GetInstance()->AssertMessage("Hello");
-			Debug::Destroy();
+			Debug::Create("TestsLog.txt"); // Destroy in last test
+			Debug::GetInstance()->AssertMessage(true, "AssertMessageStatement", DL_META_INFO_CSTR);
 		}
 
 		TEST_METHOD(PrintMessageFormatted)
 		{
-			Debug::Create();
-			Debug::GetInstance()->PrintMessageFormat("Hello %f", 2.34);
-			Debug::Destroy();
+			Debug::GetInstance()->PrintMessageFormat("PrintMessageFormatted (float): %f", 2.34f);
+			Debug::GetInstance()->PrintMessageFormat("PrintMessageFormatted (int): %i", 4);
+			Debug::GetInstance()->PrintMessageFormat("PrintMessageFormatted (double): %f", 0.54363654);
 		}
 	};
 
@@ -73,9 +71,7 @@ namespace DebugLogger
 	{
 		TEST_METHOD(Macro_DL_ASSERT_message)
 		{
-			Debug::Create();
-			auto s = std::string("This is the message!") + std::string("\n") + __FUNCTION__ + "() (at " + __FILE__ + ":" + std::to_string(__LINE__) + ")\n";
-			Debug::GetInstance()->PrintMessage(s.c_str());
+			DL_ASSERT(true, "Macro_DL_ASSERT_message_statement");
 			Debug::Destroy();
 		}
 	};
