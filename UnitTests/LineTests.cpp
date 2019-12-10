@@ -6,26 +6,25 @@
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace CommonUtilities;
 
-namespace LinesAndPlanes
+namespace LinesTests
 {
 	TEST_CLASS(Lines)
 	{
 		TEST_METHOD(CopyConstructor)
 		{
-			Line<float> line;
-			line.InitWith2Points({ 1.f, -1.f }, { 1.5f, 0 });
+			Line<float> line({ 1.f, -1.f }, { 1.5f, 0 });
 			Line<float> copy = line;
 			Assert::AreEqual(line.GetNormal().x, copy.GetNormal().x);
 			Assert::AreEqual(line.GetNormal().y, copy.GetNormal().y);
 
-			Assert::AreEqual(0.f, line.GetNormal().Dot(Vector2<float>{ 1.f, -1.f } - Vector2<float>{1.5f, 0}));
+			Assert::AreEqual(0.f, line.GetNormal().Dot(Vector2<float>{ 1.f, -1.f } -Vector2<float>{1.5f, 0}));
 		}
 		TEST_METHOD(Assignment)
 		{
 			Line<float> line;
 			line.InitWith2Points({ 1.f, -1.f }, { 1.5f, 0 });
 			Line<float> copy{ {1.2f, -3.f }, { -3.2f, 3.2f } };
-		
+
 			copy = line;
 			Assert::AreEqual(line.GetNormal().x, copy.GetNormal().x);
 			Assert::AreEqual(line.GetNormal().y, copy.GetNormal().y);
@@ -36,7 +35,7 @@ namespace LinesAndPlanes
 			Line<float> line;
 			auto direction = Vector2<float>{ 1.5f, 0.f } -Vector2<float>{ 1.f, -1.f};
 			line.InitWithPointAndDirection(Vector2<float>{ 1.5f, 0.f }, direction.GetNormalized());
-			
+
 			Assert::AreEqual(0.f, line.GetNormal().Dot(Vector2<float>{ 1.f, -1.f } -Vector2<float>{1.5f, 0}));
 		}
 
@@ -60,13 +59,13 @@ namespace LinesAndPlanes
 			// Normal is pointing "upwards left"
 			/*              /
 			---0----1.0---1.5-----2.0-
-			              /
+						  /
 			  normal: \  /
-			           \/
-		               /
-		              /
+					   \/
+					   /
+					  /
 		   -1.0      X (1, -1)
-			        /
+					/
 			*/
 			Assert::IsTrue(line.IsInside({ 2.5f, -1.f }));
 			Assert::IsFalse(line.IsInside({ 0, -1.f }));

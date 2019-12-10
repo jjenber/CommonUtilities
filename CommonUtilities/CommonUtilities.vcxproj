@@ -11,15 +11,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DL_assert.h" />
-    <ClInclude Include="DL_Debug.h" />
-    <ClInclude Include="DL_StackWalker.h" />
-    <ClInclude Include="Macros.h" />
-    <ClInclude Include="RapidJSON.h" />
-    <ClInclude Include="StackWalker\StackWalker.h" />
+    <ClInclude Include="Line.h" />
+    <ClInclude Include="Plane.h" />
+    <ClInclude Include="Timer.h" />
+    <ClInclude Include="Vector2.h" />
+    <ClInclude Include="Vector3.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="RapidJSON.cpp" />
+    <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

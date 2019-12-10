@@ -12,7 +12,8 @@ namespace CommonUtilities
 		Line(const Vector2<T>& aPoint0, const Vector2<T>& aPoint1);
 		
 		void						InitWith2Points(const Vector2<T>& aPoint0, const Vector2<T>& aPoint1);
-		void						InitWithPointAndDirection(const Vector2<T>& aPoint, const Vector2<T> aDirection);
+		void						InitWithPointAndDirection(const Vector2<T>& aPoint, const Vector2<T> aDirection);
+
 		bool						IsInside(const Vector2<T>& aPosition) const;
 		
 		inline const Vector2<T>&	GetNormal() const;
