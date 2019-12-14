@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="JsonUtility.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="Timer.h" />
@@ -18,6 +19,7 @@
     <ClInclude Include="Vector3.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="JsonUtility.cpp" />
     <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
