@@ -1,18 +1,11 @@
-#include "../CommonUtilities/Timer.h"
+#include "../CommonUtilities/JsonUtility.h"
+#include <string>
 #include <iostream>
-#include <thread>
-#include <chrono>
-
 int main()
 {
-	CommonUtilities::Timer timer;
-
-	while (true)
-	{
-		timer.Update();
-
-		const int fps = static_cast<int>(1.f / timer.GetDeltaTime() + 0.5f);
-		printf("Total Time: %10f  -  Delta Time: %10f  -  FPS: %i\n", timer.GetTotalTime(), timer.GetDeltaTime(), fps);
-		std::this_thread::sleep_for(std::chrono::milliseconds(500));
-	}
+	CommonUtilities::JsonUtility json("test.json");
+	auto names = json.ParseArray("testArray");
+	std::cout << names.begin()->GetString() << std::endl;
+	std::cout << (names.begin() + 1)->GetInt() << std::endl;
+	
 }
