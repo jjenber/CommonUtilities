@@ -18,10 +18,7 @@
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LineTests.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PlaneTests.cpp">
+    <ClCompile Include="MatrixTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
