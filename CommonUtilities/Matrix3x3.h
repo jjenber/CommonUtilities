@@ -114,13 +114,14 @@ namespace CommonUtilities
 		{
 			for (auto col = 0; col < 3; col++)
 			{
+				const int offset = col * 3;
 				for (auto i = 0; i < 3; i++)
 				{
+					const int index = row + offset;
+					result.myData[i + offset] = aMatrix[index] * result[index];
 				}
 			}
 		}
 	}
-
-
 #pragma endregion Operators
 }
