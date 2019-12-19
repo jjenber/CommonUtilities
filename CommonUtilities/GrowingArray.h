@@ -37,6 +37,8 @@ namespace CommonUtilities
 		__forceinline SizeType Capacity() const;
 	
 	private:
+		static const SizeType FoundNone = -1;
+
 		void Swap(GrowingArray& aGrowingArray) noexcept;
 		inline void Free();
 
@@ -200,7 +202,7 @@ namespace CommonUtilities
 				return value;
 			}
 		}
-		static const SizeType FoundNone = -1;
+		
 		return FoundNone;
 	}
 
@@ -213,6 +215,7 @@ namespace CommonUtilities
 		{
 			if (myData[i] == aValue)
 			{
+				(myData + i)->~T();
 				myData[i] = myData[mySize-- - 1];
 				break;
 			}
@@ -227,6 +230,7 @@ namespace CommonUtilities
 	inline void GrowingArray<T, SizeType>::RemoveCyclicAtIndex(const SizeType aIndex)
 	{
 		assert(aIndex >= 0 && aIndex < mySize && "Index out of bounds");
+		(myData + aIndex)->~T();
 		myData[aIndex] = myData[mySize-- - 1];
 	}
 
@@ -331,7 +335,7 @@ namespace CommonUtilities
 		{
 			(myData + i)->~T();
 		}
-		::operator delete(myData);
+		::operator delete[](myData);
 		myReserved = 0;
 		mySize = 0;
 	}
