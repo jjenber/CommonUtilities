@@ -23,6 +23,8 @@ namespace CommonUtilities
 
 		inline void Add(const T& aValue);
 		inline void Insert(const SizeType aIndex, const T& aValue);
+
+		// Returns FoundNone if the value is not in the array.
 		inline SizeType Find(const T& aValue);
 
 		inline void RemoveCyclic(const T& aValue);
@@ -36,8 +38,8 @@ namespace CommonUtilities
 		__forceinline SizeType Size() const;
 		__forceinline SizeType Capacity() const;
 	
-	private:
 		static const SizeType FoundNone = -1;
+	private:
 
 		void Swap(GrowingArray& aGrowingArray) noexcept;
 		inline void Free();
@@ -196,13 +198,11 @@ namespace CommonUtilities
 	{
 		for (SizeType i = 0; i < mySize; i++)
 		{
-			const T& value = myData[i];
-			if (value == aValue)
+			if (myData[i] == aValue)
 			{
-				return value;
+				return i;
 			}
 		}
-		
 		return FoundNone;
 	}
 
@@ -217,6 +217,7 @@ namespace CommonUtilities
 			{
 				(myData + i)->~T();
 				myData[i] = myData[mySize-- - 1];
+				(myData + mySize)->~T();
 				break;
 			}
 			if (i == mySize - 1)
@@ -232,6 +233,7 @@ namespace CommonUtilities
 		assert(aIndex >= 0 && aIndex < mySize && "Index out of bounds");
 		(myData + aIndex)->~T();
 		myData[aIndex] = myData[mySize-- - 1];
+		(myData + mySize)->~T();
 	}
 
 	template<typename T, typename SizeType>
@@ -335,7 +337,7 @@ namespace CommonUtilities
 		{
 			(myData + i)->~T();
 		}
-		::operator delete[](myData);
+		::operator delete(myData);
 		myReserved = 0;
 		mySize = 0;
 	}

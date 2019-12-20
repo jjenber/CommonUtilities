@@ -129,6 +129,56 @@ namespace GrowingArrayTest
 			Assert::AreEqual(arr[1], aCopy[1]);
 			Assert::AreEqual(arr[2], aCopy[2]);
 		}
+		TEST_METHOD(NoMemLeakStringEmpty)
+		{
+			_CrtMemState memStart;
+			_CrtMemState memEnd;
+			_CrtMemState memDiff;
+			_CrtMemCheckpoint(&memStart);
+			{
+				{
+					GrowingArray<std::string, int> arr(10);
+					GrowingArray <std::string, int> aCopy = arr;
+				}
+				{
+					GrowingArray<std::string, int> arr;
+				}
+				{
+					GrowingArray<std::string, int> arr(100);
+				}
+				{
+					GrowingArray<std::string, int> arr;
+					arr.Init();
+				}
+			}
+			_CrtMemCheckpoint(&memEnd);
+			Assert::IsFalse(_CrtMemDifference(&memDiff, &memStart, &memEnd), L"There is a memory leak!");
+		}
+		TEST_METHOD(NoMemLeakStringEmptyUnsafe)
+		{
+			_CrtMemState memStart;
+			_CrtMemState memEnd;
+			_CrtMemState memDiff;
+			_CrtMemCheckpoint(&memStart);
+			{
+				{
+					GrowingArray<std::string, int> arr(10, false);
+					GrowingArray <std::string, int> aCopy = arr;
+				}
+				{
+					GrowingArray<std::string, int> arr;
+				}
+				{
+					GrowingArray<std::string, int> arr(100, false);
+				}
+				{
+					GrowingArray<std::string, int> arr;
+					arr.Init(10, false);
+				}
+			}
+			_CrtMemCheckpoint(&memEnd);
+			Assert::IsFalse(_CrtMemDifference(&memDiff, &memStart, &memEnd), L"There is a memory leak!");
+		}
 	};
 
 	TEST_CLASS(SubscriptOperator)
@@ -692,7 +742,7 @@ namespace GrowingArrayTest
 			_CrtMemState memDiff;
 			_CrtMemCheckpoint(&memStart);
 			{
-				/*{
+				{
 					GrowingArray<std::string, int> vector;
 					vector.Init();
 					vector.Add("lorem");
@@ -702,19 +752,16 @@ namespace GrowingArrayTest
 					vector.RemoveCyclic("ipsum");
 					Assert::AreEqual(2, vector.Size());
 					Assert::AreEqual(std::string("dolor"), vector[1]);
-				}*/
+				}
 				{
-					/*GrowingArray<std::string, int> vector(3, false);
+					GrowingArray<std::string, int> vector(3, false);
 					vector.Add("lorem");
 					vector.Add("ipsum");
 					vector.Add("dolor");
 					Assert::AreEqual(3, vector.Size());
 					vector.RemoveCyclic("ipsum");
 					Assert::AreEqual(2, vector.Size());
-					Assert::AreEqual(std::string("dolor"), vector[1]);*/
-
-					GrowingArray<std::string, int> vector(3, false);
-					vector.Add("lorem");
+					Assert::AreEqual(std::string("dolor"), vector[1]);
 					
 				}
 			}
@@ -802,6 +849,30 @@ namespace GrowingArrayTest
 			Assert::AreEqual(2, vector.Size());
 			Assert::AreEqual(2, vector[1]);
 		}
+
+		TEST_METHOD(MemLeakStrings)
+		{
+			_CrtMemState memStart;
+			_CrtMemState memEnd;
+			_CrtMemState memDiff;
+			_CrtMemCheckpoint(&memStart);
+			{
+				{
+					GrowingArray<std::string, int> vector;
+					vector.Init();
+					vector.Add("lorem");
+					vector.Add("ipsum");
+					vector.Add("dolor");
+					vector.RemoveCyclicAtIndex(0);
+					Assert::AreEqual(std::string("dolor"), vector[0]);
+					vector.RemoveCyclicAtIndex(0);
+					vector.RemoveCyclicAtIndex(0);
+					Assert::AreEqual(0, vector.Size());
+				}
+			}
+			_CrtMemCheckpoint(&memEnd);
+			Assert::IsFalse(_CrtMemDifference(&memDiff, &memStart, &memEnd), L"There is a memory leak!");
+		}
 	};
 
 	TEST_CLASS(RemoveAll)
@@ -856,6 +927,27 @@ namespace GrowingArrayTest
 			Assert::AreEqual(5, vector[0]);
 
 		}
+
+		TEST_METHOD(RemoveAllMemLeak)
+		{
+			_CrtMemState memStart;
+			_CrtMemState memEnd;
+			_CrtMemState memDiff;
+			_CrtMemCheckpoint(&memStart);
+			{
+				{
+					GrowingArray<std::string, int> vector;
+					vector.Init();
+					vector.Add("lorem");
+					vector.Add("ipsum");
+					vector.Add("dolor");
+					vector.RemoveAll();
+					Assert::AreEqual(0, vector.Size());
+				}
+			}
+			_CrtMemCheckpoint(&memEnd);
+			Assert::IsFalse(_CrtMemDifference(&memDiff, &memStart, &memEnd), L"There is a memory leak!");
+		}
 	};
 
 	TEST_CLASS(Optimize)
@@ -873,6 +965,26 @@ namespace GrowingArrayTest
 			Assert::AreEqual(3, vector.Size());
 		}
 		TEST_METHOD(MemoryLeak)
+		{
+			_CrtMemState memStart;
+			_CrtMemState memEnd;
+			_CrtMemState memDiff;
+			_CrtMemCheckpoint(&memStart);
+			{
+				GrowingArray<std::string, int> vector(10);
+				vector.Add("lorem");
+				vector.Add("ipsum");
+				vector.Add("dolor");
+				Assert::AreEqual(10, vector.Capacity());
+				Assert::AreEqual(3, vector.Size());
+				vector.Optimize();
+				Assert::AreEqual(3, vector.Capacity());
+				Assert::AreEqual(3, vector.Size());
+			}
+			_CrtMemCheckpoint(&memEnd);
+			Assert::IsFalse(_CrtMemDifference(&memDiff, &memStart, &memEnd), L"There is a memory leak!");
+		}
+		TEST_METHOD(MemoryLeakStrings)
 		{
 			_CrtMemState memStart;
 			_CrtMemState memEnd;
@@ -922,6 +1034,48 @@ namespace GrowingArrayTest
 					vector.Optimize();
 					Assert::AreEqual(3, vector.Capacity());
 					Assert::AreEqual(3, vector.Size());
+				}
+			}
+			_CrtMemCheckpoint(&memEnd);
+			Assert::IsFalse(_CrtMemDifference(&memDiff, &memStart, &memEnd), L"There is a memory leak!");
+		}
+	};
+
+	TEST_CLASS(Find)
+	{
+		TEST_METHOD(FindAtZero)
+		{
+			_CrtMemState memStart;
+			_CrtMemState memEnd;
+			_CrtMemState memDiff;
+			_CrtMemCheckpoint(&memStart);
+			{
+				{
+					GrowingArray<std::string, int> vector;
+					vector.Init();
+					vector.Add("lorem");
+					vector.Add("ipsum");
+					vector.Add("dolor");
+					Assert::AreEqual(0, vector.Find("lorem"));
+				}
+			}
+			_CrtMemCheckpoint(&memEnd);
+			Assert::IsFalse(_CrtMemDifference(&memDiff, &memStart, &memEnd), L"There is a memory leak!");
+		}
+		TEST_METHOD(FindNone)
+		{
+			_CrtMemState memStart;
+			_CrtMemState memEnd;
+			_CrtMemState memDiff;
+			_CrtMemCheckpoint(&memStart);
+			{
+				{
+					GrowingArray<std::string, int> vector(3, false);
+					vector.Add("lorem");
+					vector.Add("ipsum");
+					vector.Add("dolor");
+					Assert::AreEqual(GrowingArray<std::string, int>::FoundNone, vector.Find("none"));
+
 				}
 			}
 			_CrtMemCheckpoint(&memEnd);
