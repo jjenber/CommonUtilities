@@ -1075,7 +1075,6 @@ namespace GrowingArrayTest
 					vector.Add("ipsum");
 					vector.Add("dolor");
 					Assert::AreEqual(GrowingArray<std::string, int>::FoundNone, vector.Find("none"));
-
 				}
 			}
 			_CrtMemCheckpoint(&memEnd);
