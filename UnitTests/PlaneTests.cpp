@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "CppUnitTest.h"
 #include "..//CommonUtilities/Plane.h"
+#include "..//CommonUtilities/PlaneVolume.h"
+#include <vector>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace CommonUtilities;
@@ -40,6 +42,30 @@ namespace PlanesTests
 			Vector3<float> point = { 3.f, 0.f, 1.f };
 
 			Plane<float> explicitPlane(point, { 0, -1.f, 0 });
+		}
+	};
+
+	TEST_CLASS(PlaneVolumes)
+	{
+		TEST_METHOD(IsInside)
+		{
+			Vector3<float> point0{ -1.f, 1.f, 0.f };
+			Vector3<float> point1{ 1.f, 1.f, 2.f };
+			Vector3<float> point2{ -1.f, 1.f, -2.f };
+
+			Vector3<float> point3{ -1.f, -1.f, 0.f };
+			Vector3<float> point4{ 1.f, -1.f, 2.f };
+			Vector3<float> point5{ -1.f, -1.f, -2.f };
+
+			Plane<float> plane0(point0, point1, point2);
+			Plane<float> plane1(point5, point4, point3);
+
+			PlaneVolume<float> pv;
+			pv.AddPlane(plane0);
+			pv.AddPlane(plane1);
+
+			Assert::IsTrue(pv.IsInside({ 0.f, 0.f, 0.f }));
+			Assert::IsFalse(pv.IsInside({ 0.f, 10.f, 0.f }));
 		}
 	};
 }

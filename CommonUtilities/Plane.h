@@ -24,9 +24,8 @@ namespace CommonUtilities
 
 	template<typename T>
 	inline Plane<T>::Plane(const Vector3<T>& aPoint0, const Vector3<T>& aPoint1, const Vector3<T>& aPoint2)
-	{
-		myNormal = Vector3<float>{ aPoint1 - aPoint0 }.Cross(aPoint2 - aPoint0).GetNormalized();
-	}
+		: Plane(aPoint0, Vector3<float>{ aPoint1 - aPoint0 }.Cross(aPoint2 - aPoint0).GetNormalized())
+	{}
 
 	template<typename T>
 	inline Plane<T>::Plane(const Vector3<T>& aPoint0, const Vector3<T>& aNormal)
