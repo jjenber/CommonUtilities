@@ -17,7 +17,7 @@ namespace CommonUtilities
 		bool						IsInside(const Vector2<T>& aPosition) const;
 		
 		inline const Vector2<T>&	GetNormal() const;
-		inline const Vector2<T>&	GetDirection() const;
+		inline const Vector2<T>		GetDirection() const;
 	private:
 		Vector2<T>					myNormal;
 		Vector2<T>					myPoint;
@@ -39,7 +39,7 @@ namespace CommonUtilities
 	template<typename T>
 	inline void Line<T>::InitWith2Points(const Vector2<T>& aPoint0, const Vector2<T>& aPoint1)
 	{
-		myNormal = Vector2<T>{ -(aPoint1.y - aPoint0.y), aPoint1.x - aPoint0.x }.GetNormalized();
+		myNormal = Vector2<T>{ -(aPoint1.y - aPoint0.y), (aPoint1.x - aPoint0.x) }.GetNormalized();
 		myPoint = aPoint0;
 	}
 
@@ -63,9 +63,9 @@ namespace CommonUtilities
 	}
 
 	template<typename T>
-	inline const Vector2<T>& Line<T>::GetDirection() const
+	inline const Vector2<T> Line<T>::GetDirection() const
 	{
-		return { -myNormal.y, myNormal.x };
+		return { myNormal.y, -myNormal.x };
 	}
 }
 
