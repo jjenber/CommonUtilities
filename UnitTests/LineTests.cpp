@@ -37,13 +37,13 @@ namespace LinesTests
 			auto direction = Vector2<float>{ 1.5f, 0.f } -Vector2<float>{ 1.f, -1.f};
 			line.InitWithPointAndDirection(Vector2<float>{ 1.5f, 0.f }, direction.GetNormalized());
 
-			Assert::AreEqual(0.f, line.GetNormal().Dot(Vector2<float>{ 1.f, -1.f } -Vector2<float>{1.5f, 0}));
+			Assert::AreEqual(0.f, line.GetNormal().Dot(Vector2<float>{1.5f, 0} -Vector2<float>{ 1.f, -1.f }));
 		}
 
 		TEST_METHOD(GetDirection)
 		{
 			Line<float> line;
-			auto direction = (Vector2<float>{ 1.5f, 0.f } -Vector2<float>{ 1.f, -1.f}).GetNormalized();
+			auto direction = (Vector2<float>{ 1.f, -1.f} -Vector2<float>{ 1.5f, 0.f }).GetNormalized();
 			line.InitWithPointAndDirection(Vector2<float>{ 1.5f, 0.f }, direction);
 
 			/*Assert::AreEqual(direction.x, line.GetDirection().x);
