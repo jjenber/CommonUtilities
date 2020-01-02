@@ -56,7 +56,7 @@ namespace LinesTests
 			line.InitWithPointAndDirection(Vector2<float>{ 1.5f, 0.f }, direction.GetNormalized());
 
 			// --Rough sketch--!!
-			// Normal is pointing "upwards left"
+			// Normal is pointing "positive left"
 			/*              /
 			---0----1.0---1.5-----2.0-
 						  /

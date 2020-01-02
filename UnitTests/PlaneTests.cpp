@@ -35,6 +35,11 @@ namespace PlanesTests
 			Assert::AreEqual(explicitPlane.GetNormal().z, implicitPlane.GetNormal().z);
 		}
 
-		TEST_METHOD(Constr)
+		TEST_METHOD(InitWith3Points)
+		{
+			Vector3<float> point = { 3.f, 0.f, 1.f };
+
+			Plane<float> explicitPlane(point, { 0, -1.f, 0 });
+		}
 	};
 }

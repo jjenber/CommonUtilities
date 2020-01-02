@@ -53,4 +53,10 @@ namespace CommonUtilities
 	{
 		return myNormal;
 	}
+
+	template<typename T>
+	inline bool Plane<T>::IsInside(const Vector3<T>& aPosition) const
+	{
+		return myNormal.Dot(aPosition - myPoint) <= 0;
+	}
 }

@@ -39,7 +39,7 @@ namespace CommonUtilities
 	template<typename T>
 	inline void Line<T>::InitWith2Points(const Vector2<T>& aPoint0, const Vector2<T>& aPoint1)
 	{
-		myNormal = Vector2<T>{ -(aPoint0.y - aPoint1.y), aPoint0.x - aPoint1.x }.GetNormalized();
+		myNormal = Vector2<T>{ -(aPoint1.y - aPoint0.y), aPoint1.x - aPoint0.x }.GetNormalized();
 		myPoint = aPoint0;
 	}
 

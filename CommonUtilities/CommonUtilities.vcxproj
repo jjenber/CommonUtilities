@@ -11,31 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DL_assert.h" />
-    <ClInclude Include="DL_Debug.h" />
-    <ClInclude Include="DL_StackWalker.h" />
     <ClInclude Include="GrowingArray.h" />
-    <ClInclude Include="InputHandler.h" />
-    <ClInclude Include="JsonUtility.h" />
     <ClInclude Include="Line.h" />
-    <ClInclude Include="Macros.h" />
-    <ClInclude Include="Matrix3x3.h" />
-    <ClInclude Include="Matrix4x4.h" />
     <ClInclude Include="Plane.h" />
-    <ClInclude Include="StaticArray.h" />
-    <ClInclude Include="Timer.h" />
-    <ClInclude Include="Vector.h" />
-    <ClInclude Include="Vector2.h" />
-    <ClInclude Include="Vector3.h" />
-    <ClInclude Include="Vector4.h" />
-    <ClInclude Include="VectorOnStack.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="DL_Debug.cpp" />
-    <ClCompile Include="DL_StackWalker.cpp" />
-    <ClCompile Include="InputHandler.cpp" />
-    <ClCompile Include="JsonUtility.cpp" />
-    <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
