@@ -1,7 +1,8 @@
 #include "pch.h"
 #include "CppUnitTest.h"
 #include "..//CommonUtilities/Line.h"
-#include <iostream>
+#include "..//CommonUtilities/LineVolume.h"
+#include <vector>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace CommonUtilities;
@@ -69,6 +70,39 @@ namespace LinesTests
 			*/
 			Assert::IsTrue(line.IsInside({ 2.5f, -1.f }));
 			Assert::IsFalse(line.IsInside({ 0, -1.f }));
+		}
+	};
+
+	TEST_CLASS(LineVolumes)
+	{
+		TEST_METHOD(IsInside)
+		{
+			Vector2<float> point0{ -1.f, 0.f };
+			Vector2<float> point1{ 1.f, 2.f };
+			Vector2<float> point2{ -1.f, -2.f };
+
+			Line<float> line0(point0, point1);
+			Line<float> line1(point1, point2);
+			Line<float> line2(point2, point0);
+			LineVolume<float> volume{ { line0, line1, line2 } };
+			Assert::IsTrue(volume.IsInside({ 0, 0 }));
+			Assert::IsFalse(volume.IsInside({-1.f, 1.f}));
+		}
+		TEST_METHOD(AddLine)
+		{
+			Vector2<float> point0{ -1.f, 0.f };
+			Vector2<float> point1{ 1.f, 2.f };
+			Vector2<float> point2{ -1.f, -2.f };
+
+			Line<float> line0(point0, point1);
+			Line<float> line1(point1, point2);
+			Line<float> line2(point2, point0);
+			LineVolume<float> volume;
+			volume.AddLine(line0);
+			volume.AddLine(line1);
+			volume.AddLine(line2);
+			Assert::IsTrue(volume.IsInside({ 0, 0 }));
+			Assert::IsFalse(volume.IsInside({ -1.f, 1.f }));
 		}
 	};
 }

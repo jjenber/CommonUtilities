@@ -13,7 +13,9 @@
   <ItemGroup>
     <ClInclude Include="GrowingArray.h" />
     <ClInclude Include="Line.h" />
+    <ClInclude Include="LineVolume.h" />
     <ClInclude Include="Plane.h" />
+    <ClInclude Include="Vector3.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
