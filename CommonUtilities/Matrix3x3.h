@@ -1,5 +1,6 @@
 #pragma once
 #include <assert.h>
+#include "Matrix4x4.h"
 namespace CommonUtilities
 {
 	template<typename T> 
@@ -9,7 +10,7 @@ namespace CommonUtilities
 		Matrix3x3<T>();
 		Matrix3x3<T>(const Matrix3x3<T>& aMatrix);
 		Matrix3x3<T>(std::initializer_list<T> aList);
-		//Matrix3x3<T>(const Matrix4x4<T>& aMatrix);
+		Matrix3x3<T>(const Matrix4x4<T>& aMatrix);
 
 		T& operator()(const int aRow, const int aColumn);
 		const T& operator()(const int aRow, const int aColumn) const;
@@ -24,7 +25,10 @@ namespace CommonUtilities
 		Matrix3x3<T> operator-(const Matrix3x3<T>& aMatrix);
 		Matrix3x3<T>& operator-=(const Matrix3x3<T>& aMatrix);
 		Matrix3x3<T> operator*(const Matrix3x3<T>& aMatrix);
-		Matrix3x3<T> operator*=(const Matrix3x3<T>& aMatrix);
+		Matrix3x3<T>& operator*=(const Matrix3x3<T>& aMatrix);
+
+		Matrix3x3<T> operator*(const T& aScalar);
+		Matrix3x3<T>& operator*=(const T& aScalar);
 	
 	private:
 		T myData[9];
@@ -48,28 +52,35 @@ namespace CommonUtilities
 		}
 	}
 
-#pragma endregion Constructors
+	template<typename T>
+	inline Matrix3x3<T>::Matrix3x3(const Matrix4x4<T>& aMatrix)
+	{
+		std::memcpy(myData,     &aMatrix(1, 1), sizeof(T) * 3);
+		std::memcpy(myData + 3, &aMatrix(1, 2), sizeof(T) * 3);
+		std::memcpy(myData + 6, &aMatrix(1, 3), sizeof(T) * 3);
+	}
 
+#pragma endregion Constructors
 
 #pragma region Operators
 	// Rows and Columns start at 1.
 	template<typename T> inline T& Matrix3x3<T>::operator()(const int aRow, const int aColumn)
 	{
 		assert(aRow > 0 && aRow < 4 && aColumn > 0 && aColumn < 4 && "Argument out of bounds");
-		return myData[(aRow - 1) * 3 + (aColumn - 1)];
+		return myData[(aRow - 1) + ((aColumn - 1) * 3)];
 	}
 
 	// Rows and Columns start at 1.
 	template<typename T> inline const T& Matrix3x3<T>::operator()(const int aRow, const int aColumn) const
 	{
-		return operator(aRow, aColumn);
+		return myData[(aRow - 1) + ((aColumn - 1) * 3)];
 	}
 
 	template<typename T>
 	inline Matrix3x3<T> Matrix3x3<T>::operator+(const Matrix3x3<T>& aMatrix)
 	{
-		Matrix3x3<T> result{ aMatrix };
-		return result += *this;
+		Matrix3x3<T> result{ *this };
+		return result += aMatrix;
 	}
 
 	template<typename T>
@@ -107,21 +118,48 @@ namespace CommonUtilities
 	}
 
 	template<typename T>
-	inline Matrix3x3<T> Matrix3x3<T>::operator*=(const Matrix3x3<T>& aMatrix)
+	inline Matrix3x3<T> Matrix3x3<T>::operator*(const Matrix3x3<T>& aMatrix)
+	{
+		Matrix3x3<T> result{ *this };
+		return result *= aMatrix;
+	}
+
+	template<typename T>
+	inline Matrix3x3<T>& Matrix3x3<T>::operator*=(const Matrix3x3<T>& aMatrix)
 	{
 		Matrix3x3<T> result;
-		for (auto row = 0; row < 3; row++)
+		for (int i = 1; i <= 3; i++)
 		{
-			for (auto col = 0; col < 3; col++)
+			for (auto j = 1; j <= 3; j++)
 			{
-				const int offset = col * 3;
-				for (auto i = 0; i < 3; i++)
+				T value{ 0 };
+				for (auto k = 1; k <= 3; k++)
 				{
-					const int index = row + offset;
-					result.myData[i + offset] = aMatrix[index] * result[index];
+					value += this->operator()(k, i) * aMatrix(j, k);
 				}
+				result(j, i) = value;
 			}
 		}
+		std::memcpy(this->myData, result.myData, sizeof(T) * 9);
+		return *this;
 	}
+
+	template<typename T>
+	inline Matrix3x3<T> Matrix3x3<T>::operator*(const T& aScalar)
+	{
+		Matrix3x3<T> result{ *this };
+		return result *= aScalar;
+	}
+	template<typename T>
+	inline Matrix3x3<T>& Matrix3x3<T>::operator*=(const T& aScalar)
+	{
+		for (int i = 0; i < 9; i++)
+		{
+			myData[i] *= aScalar;
+		}
+		return *this;
+	}
+
+
 #pragma endregion Operators
 }

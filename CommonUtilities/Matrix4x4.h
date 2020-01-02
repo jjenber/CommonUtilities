@@ -19,24 +19,31 @@ namespace CommonUtilities
 		static Matrix4x4<T> CreateRotationAroundZ(T aAngleInRadians);
 		static Matrix4x4<T> Transpose(const Matrix4x4<T>& aMatrixToTranspose);
 
+		Matrix4x4<T> operator+(const Matrix4x4<T>& aMatrix);
+		Matrix4x4<T>& operator+=(const Matrix4x4<T>& aMatrix);
+		Matrix4x4<T> operator-(const Matrix4x4<T>& aMatrix);
+		Matrix4x4<T>& operator-=(const Matrix4x4<T>& aMatrix);
+		Matrix4x4<T> operator*(const Matrix4x4<T>& aMatrix);
+		Matrix4x4<T>& operator*=(const Matrix4x4<T>& aMatrix);
+
 	private:
-		T myData[12];
+		T myData[16];
 	};
 
 #pragma region Constructors
 	template <typename T> Matrix4x4<T>::Matrix4x4() : myData() {}
 	template <typename T> Matrix4x4<T>::Matrix4x4(const Matrix4x4<T>& aMatrix)
 	{
-		memcpy(myData, aMatrix.myData, sizeof(T) * size_t(12));
+		memcpy(myData, aMatrix.myData, sizeof(T) * size_t(16));
 	}
 
 	template<typename T> inline Matrix4x4<T>::Matrix4x4(std::initializer_list<T> aList)
 	{
-		assert(aList.size() < 13 && "Initializer list contains too many values.");
+		assert(aList.size() < 17 && "Initializer list contains too many values.");
 		std::memcpy(myData, aList.begin(), sizeof(T) * aList.size());
-		if (aList.size() < 12)
+		if (aList.size() < 16)
 		{
-			std::fill(myData + aList.size(), myData + 12, myData[aList.size() - 1]);
+			std::fill(myData + aList.size(), myData + 16, myData[aList.size() - 1]);
 		}
 	}
 #pragma endregion Constructors
@@ -47,13 +54,31 @@ namespace CommonUtilities
 	template<typename T> inline T& Matrix4x4<T>::operator()(const int aRow, const int aColumn)
 	{
 		assert(aRow > 0 && aRow < 5 && aColumn > 0 && aColumn < 5 && "Argument out of bounds");
-		return myData[(aRow - 1) * 4 + (aColumn - 1)];
+		return myData[(aRow - 1) + ((aColumn - 1) * 4)];
 	}
 
 	// Rows and Columns start at 1.
 	template<typename T> inline const T& Matrix4x4<T>::operator()(const int aRow, const int aColumn) const
 	{
-		return operator(aRow, aColumn);
+		return myData[(aRow - 1) + ((aColumn - 1) * 4)];
 	}
+
+	template<typename T>
+	inline Matrix4x4<T> Matrix4x4<T>::operator+(const Matrix4x4<T>& aMatrix)
+	{
+		Matrix4x4<T> result{ *this };
+		return result += aMatrix;
+	}
+
+	template<typename T>
+	inline Matrix4x4<T>& Matrix4x4<T>::operator+=(const Matrix4x4<T>& aMatrix)
+	{
+		for (auto i = 0; i < 16; i++)
+		{
+			myData[i] += aMatrix.myData[i];
+		}
+		return *this;
+	}
+
 #pragma endregion Operators
 }
