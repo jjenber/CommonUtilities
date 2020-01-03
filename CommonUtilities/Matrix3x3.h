@@ -86,6 +86,7 @@ namespace CommonUtilities
 	// Rows and Columns start at 1.
 	template<typename T> inline const T& Matrix3x3<T>::operator()(const int aRow, const int aColumn) const
 	{
+		assert(aRow > 0 && aRow < 4 && aColumn > 0 && aColumn < 4 && "Argument out of bounds");
 		return myData[(aRow - 1) + ((aColumn - 1) * 3)];
 	}
 
