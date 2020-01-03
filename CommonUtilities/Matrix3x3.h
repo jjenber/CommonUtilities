@@ -11,8 +11,8 @@ namespace CommonUtilities
 	public:
 		Matrix3x3<T>();
 		Matrix3x3<T>(const Matrix3x3<T>& aMatrix);
-		Matrix3x3<T>(std::initializer_list<T> aList);
 		Matrix3x3<T>(const Matrix4x4<T>& aMatrix);
+		Matrix3x3<T>(std::initializer_list<T> aList);
 
 		Matrix3x3<T>& operator=(const Matrix3x3<T>& aMatrix);
 	
@@ -36,35 +36,35 @@ namespace CommonUtilities
 		static Matrix3x3<T> CreateRotationAroundZ(const T aAngleInRadians);
 		static Matrix3x3<T> Transpose(const Matrix3x3<T>& aMatrixToTranspose);
 	private:
-		T myData[9];
+		static const size_t myLength = 9;
+		T myData[myLength];
 	};
 	
 #pragma region Constructors
 	template <typename T> Matrix3x3<T>::Matrix3x3() : myData() {}
 	template <typename T> Matrix3x3<T>::Matrix3x3(const Matrix3x3<T>& aMatrix)
 	{
-		memcpy(myData, aMatrix.myData, sizeof(T) * size_t(9));
+		memcpy(myData, aMatrix.myData, sizeof(T) * myLength);
 	}
 	
 	template<typename T> inline Matrix3x3<T>::Matrix3x3(std::initializer_list<T> aList)
 	{
-		assert(aList.size() < 10 && "Initializer list contains too many values.");
+		assert(aList.size() <= myLength && "Initializer list contains too many values.");
 		std::memcpy(myData, aList.begin(), sizeof(T) * aList.size());
-		if (aList.size() < 9)
+		if (aList.size() < myLength)
 		{
-			std::fill(myData + aList.size(), myData + 9, myData[aList.size() - 1]);
+			std::fill(myData + aList.size(), myData + myLength, myData[aList.size() - 1]);
 		}
 	}
 
 	template<typename T>
 	inline Matrix3x3<T>::Matrix3x3(const Matrix4x4<T>& aMatrix)
 	{
-		const size_t length = sizeof(T) * 3;
-		std::memcpy(myData,     &aMatrix(1, 1), length);
-		std::memcpy(myData + 3, &aMatrix(1, 2), length);
-		std::memcpy(myData + 6, &aMatrix(1, 3), length);
+		const size_t rowLength = sizeof(T) * 3;
+		std::memcpy(myData,     &aMatrix(1, 1), rowLength);
+		std::memcpy(myData + 3, &aMatrix(1, 2), rowLength);
+		std::memcpy(myData + 6, &aMatrix(1, 3), rowLength);
 	}
-
 #pragma endregion Constructors
 
 #pragma region Operators
@@ -72,7 +72,7 @@ namespace CommonUtilities
 	template<typename T>
 	inline Matrix3x3<T>& Matrix3x3<T>::operator=(const Matrix3x3<T>& aMatrix)
 	{
-		std::memcpy(myData, aMatrix.myData, sizeof(T) * 9);
+		std::memcpy(myData, aMatrix.myData, sizeof(T) * myLength);
 		return *this;
 	}
 
@@ -92,7 +92,7 @@ namespace CommonUtilities
 	template<typename T>
 	inline bool Matrix3x3<T>::operator==(const Matrix3x3<T>& aMatrix) const
 	{
-		for (int i = 0; i < 9; i++)
+		for (int i = 0; i < myLength; i++)
 		{
 			if (myData[i] != aMatrix.myData[i])
 			{
@@ -118,18 +118,11 @@ namespace CommonUtilities
 	template<typename T>
 	inline Matrix3x3<T>& Matrix3x3<T>::operator+=(const Matrix3x3<T>& aMatrix)
 	{
-		for (auto i = 0; i < 9; i++)
+		for (auto i = 0; i < myLength; i++)
 		{
 			myData[i] += aMatrix.myData[i];
 		}
 		return *this;
-	}
-
-	template<class T>
-	Matrix3x3<T> operator+(const Matrix3x3<T>& aMatrix)
-	{
-		Matrix3x3<T> result{ aMatrix };
-		return result += aMatrix;
 	}
 
 	template<typename T>
@@ -142,7 +135,7 @@ namespace CommonUtilities
 	template<typename T>
 	inline Matrix3x3<T>& Matrix3x3<T>::operator-=(const Matrix3x3<T>& aMatrix)
 	{
-		for (auto i = 0; i < 9; i++)
+		for (auto i = 0; i < myLength; i++)
 		{
 			myData[i] -= aMatrix.myData[i];
 		}
@@ -172,7 +165,7 @@ namespace CommonUtilities
 				result(j, i) = product;
 			}
 		}
-		std::memcpy(this->myData, result.myData, sizeof(T) * 9);
+		std::memcpy(this->myData, result.myData, sizeof(T) * myLength);
 		return *this;
 	}
 
@@ -185,7 +178,7 @@ namespace CommonUtilities
 	template<typename T>
 	inline Matrix3x3<T>& Matrix3x3<T>::operator*=(const T& aScalar)
 	{
-		for (int i = 0; i < 9; i++)
+		for (int i = 0; i < myLength; i++)
 		{
 			myData[i] *= aScalar;
 		}
