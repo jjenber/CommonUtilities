@@ -21,7 +21,7 @@ namespace CommonUtilities
 		bool operator==(const Matrix3x3<T>& aMatrix) const;
 		bool operator!=(const Matrix3x3<T>& aMatrix) const;
 
-		Vector3<T> operator*(const Vector3<T>& aVector);
+		Vector3<T> operator*(const Vector3<T>& aVector) const;
 		Matrix3x3<T> operator+(const Matrix3x3<T>& aMatrix) const;
 		Matrix3x3<T> operator-(const Matrix3x3<T>& aMatrix) const;
 		Matrix3x3<T> operator*(const Matrix3x3<T>& aMatrix) const;
@@ -187,7 +187,7 @@ namespace CommonUtilities
 	}
 
 	template<typename T>
-	inline Vector3<T> Matrix3x3<T>::operator*(const Vector3<T>& aVector)
+	inline Vector3<T> Matrix3x3<T>::operator*(const Vector3<T>& aVector) const
 	{
 		Vector3<T> result;
 		for (int i = 0; i < 3; i++)

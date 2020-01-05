@@ -20,7 +20,7 @@ namespace CommonUtilities
 		bool operator==(const Matrix4x4<T>& aMatrix) const;
 		bool operator!=(const Matrix4x4<T>& aMatrix) const;
 
-		Vector4<T> operator*(const Vector4<T>& aVector);
+		Vector4<T> operator*(const Vector4<T>& aVector) const;
 		Matrix4x4<T> operator+(const Matrix4x4<T>& aMatrix) const;
 		Matrix4x4<T> operator-(const Matrix4x4<T>& aMatrix) const;
 		Matrix4x4<T> operator*(const Matrix4x4<T>& aMatrix) const;
@@ -34,6 +34,8 @@ namespace CommonUtilities
 		static Matrix4x4<T> CreateRotationAroundY(T aAngleInRadians);
 		static Matrix4x4<T> CreateRotationAroundZ(T aAngleInRadians);
 		static Matrix4x4<T> Transpose(const Matrix4x4<T>& aMatrixToTranspose);
+		// Assumes aTransform is made up of nothing but rotations and translations.
+		static Matrix4x4<T> GetFastInverse(const Matrix4x4<T>& aTransform);
 	private:
 		static const size_t myLength = 16;
 		T myData[myLength];
@@ -177,7 +179,7 @@ namespace CommonUtilities
 	}
 
 	template<typename T>
-	inline Vector4<T> Matrix4x4<T>::operator*(const Vector4<T>& aVector)
+	inline Vector4<T> Matrix4x4<T>::operator*(const Vector4<T>& aVector) const
 	{
 		Vector4<T> result;
 		for (int i = 0; i < 4; i++)
@@ -257,6 +259,20 @@ namespace CommonUtilities
 			}
 		}
 		return result;
+	}
+
+	template<typename T>
+	inline Matrix4x4<T> Matrix4x4<T>::GetFastInverse(const Matrix4x4<T>& aTransform)
+	{
+		const CommonUtilities::Matrix4x4<T> rt = CommonUtilities::Matrix4x4<T>::Transpose(aTransform);
+		const Vector4<T> translation = rt * Vector4<T>{ -aTransform.myData[12], -aTransform.myData[13], -aTransform.myData[14], T(1) };
+		return
+		{
+			rt.myData[0], rt.myData[1], rt.myData[2], 0,
+			rt.myData[4], rt.myData[5], rt.myData[6], 0,
+			rt.myData[8], rt.myData[9], rt.myData[10], 0,
+			translation.x, translation.y, translation.z, translation.w
+		};
 	}
 
 #pragma endregion Static Functions
