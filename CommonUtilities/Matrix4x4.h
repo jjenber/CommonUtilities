@@ -35,17 +35,24 @@ namespace CommonUtilities
 		static Matrix4x4<T> CreateRotationAroundZ(T aAngleInRadians);
 		static Matrix4x4<T> Transpose(const Matrix4x4<T>& aMatrixToTranspose);
 		// Assumes aTransform is made up of nothing but rotations and translations.
-		static Matrix4x4<T> GetFastInverse(const Matrix4x4<T>& aTransform);
+		static Matrix4x4<T> GetFastInverse(const Matrix4x4<T>& aTransform);		
 	private:
 		static const size_t myLength = 16;
 		T myData[myLength];
 	};
 
 #pragma region Constructors
-	template <typename T> Matrix4x4<T>::Matrix4x4() : myData() {}
+	template <typename T> Matrix4x4<T>::Matrix4x4() 
+	{
+		std::memset(myData, 0, myLength * sizeof(T));
+		myData[0] = 1;
+		myData[5] = 1;
+		myData[10] = 1;
+		myData[15] = 1;
+	}
 	template <typename T> Matrix4x4<T>::Matrix4x4(const Matrix4x4<T>& aMatrix)
 	{
-		memcpy(myData, aMatrix.myData, sizeof(T) * myLength);
+		std::memcpy(myData, aMatrix.myData, sizeof(T) * myLength);
 	}
 
 	template<typename T> inline Matrix4x4<T>::Matrix4x4(std::initializer_list<T> aList)
@@ -271,9 +278,8 @@ namespace CommonUtilities
 			rt.myData[0], rt.myData[1], rt.myData[2], 0,
 			rt.myData[4], rt.myData[5], rt.myData[6], 0,
 			rt.myData[8], rt.myData[9], rt.myData[10], 0,
-			translation.x, translation.y, translation.z, translation.w
+			translation.x, translation.y, translation.z, T(1)
 		};
 	}
-
 #pragma endregion Static Functions
 }

@@ -41,7 +41,13 @@ namespace CommonUtilities
 	};
 	
 #pragma region Constructors
-	template <typename T> Matrix3x3<T>::Matrix3x3() : myData() {}
+	template <typename T> Matrix3x3<T>::Matrix3x3() : myData() 
+	{
+		std::memset(myData, 0, myLength * sizeof(T));
+		myData[0] = 1;
+		myData[3] = 1;
+		myData[6] = 1;
+	}
 	template <typename T> Matrix3x3<T>::Matrix3x3(const Matrix3x3<T>& aMatrix)
 	{
 		memcpy(myData, aMatrix.myData, sizeof(T) * myLength);
