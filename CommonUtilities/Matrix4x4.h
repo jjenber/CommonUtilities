@@ -79,14 +79,14 @@ namespace CommonUtilities
 	template<typename T> inline T& Matrix4x4<T>::operator()(const int aRow, const int aColumn)
 	{
 		assert(aRow > 0 && aRow < 5 && aColumn > 0 && aColumn < 5 && "Argument out of bounds");
-		return myData[(aRow - 1) + ((aColumn - 1) * 4)];
+		return myData[(aRow - 1) * 4 + (aColumn - 1)];
 	}
 
 	// Rows and Columns start at 1.
 	template<typename T> inline const T& Matrix4x4<T>::operator()(const int aRow, const int aColumn) const
 	{
 		assert(aRow > 0 && aRow < 5 && aColumn > 0 && aColumn < 5 && "Argument out of bounds");
-		return myData[(aRow - 1) + ((aColumn - 1) * 4)];
+		return myData[(aRow - 1) * 4 + (aColumn - 1)];
 	}
 
 	template<typename T>

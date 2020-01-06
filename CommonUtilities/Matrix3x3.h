@@ -45,8 +45,8 @@ namespace CommonUtilities
 	{
 		std::memset(myData, 0, myLength * sizeof(T));
 		myData[0] = 1;
-		myData[3] = 1;
-		myData[6] = 1;
+		myData[4] = 1;
+		myData[8] = 1;
 	}
 	template <typename T> Matrix3x3<T>::Matrix3x3(const Matrix3x3<T>& aMatrix)
 	{
@@ -86,14 +86,14 @@ namespace CommonUtilities
 	template<typename T> inline T& Matrix3x3<T>::operator()(const int aRow, const int aColumn)
 	{
 		assert(aRow > 0 && aRow < 4 && aColumn > 0 && aColumn < 4 && "Argument out of bounds");
-		return myData[(aRow - 1) + ((aColumn - 1) * 3)];
+		return myData[(aRow - 1) * 3 + (aColumn - 1)];
 	}
 
 	// Rows and Columns start at 1.
 	template<typename T> inline const T& Matrix3x3<T>::operator()(const int aRow, const int aColumn) const
 	{
 		assert(aRow > 0 && aRow < 4 && aColumn > 0 && aColumn < 4 && "Argument out of bounds");
-		return myData[(aRow - 1) + ((aColumn - 1) * 3)];
+		return myData[(aRow - 1) * 3 + (aColumn - 1)];
 	}
 
 	template<typename T>
@@ -167,9 +167,9 @@ namespace CommonUtilities
 				T product{ 0 };
 				for (auto k = 1; k <= 3; k++)
 				{
-					product += this->operator()(k, i) * aMatrix(j, k);
+					product += this->operator()(i, k) * aMatrix(k, j);
 				}
-				result(j, i) = product;
+				result(i, j) = product;
 			}
 		}
 		std::memcpy(this->myData, result.myData, sizeof(T) * myLength);

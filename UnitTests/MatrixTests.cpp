@@ -14,7 +14,9 @@ namespace MatrixTests
 		{
 			CommonUtilities::Matrix3x3<float> mat;
 
-			Assert::AreEqual(0.f, mat(1, 1));
+			Assert::AreEqual(1.f, mat(1, 1));
+			Assert::AreEqual(0.f, mat(1, 2));
+			Assert::AreEqual(1.f, mat(2, 2));
 		}
 		TEST_METHOD(CopyConstructor)
 		{
@@ -38,14 +40,14 @@ namespace MatrixTests
 			CommonUtilities::Matrix3x3<float> copy{ 2.f };
 			copy = mat;
 			Assert::AreEqual(1.f, mat(1, 1));
-			Assert::AreEqual(2.f, mat(2, 1));
-			Assert::AreEqual(4.f, mat(1, 2));
+			Assert::AreEqual(4.f, mat(2, 1));
+			Assert::AreEqual(2.f, mat(1, 2));
 			Assert::AreEqual(5.f, mat(2, 2));
 			Assert::AreEqual(9.f, mat(3, 3));
 
 			Assert::AreEqual(1.f, copy(1, 1));
-			Assert::AreEqual(2.f, copy(2, 1));
-			Assert::AreEqual(4.f, copy(1, 2));
+			Assert::AreEqual(4.f, copy(2, 1));
+			Assert::AreEqual(2.f, copy(1, 2));
 			Assert::AreEqual(5.f, copy(2, 2));
 			Assert::AreEqual(9.f, copy(3, 3));
 		}
@@ -53,8 +55,8 @@ namespace MatrixTests
 		{
 			CommonUtilities::Matrix3x3<float> mat{ 1.f, 2.f, 3.f, 4.f, 5.f, 6.f, 7.f, 8.f, 9.f };
 			Assert::AreEqual(1.f, mat(1, 1));
-			Assert::AreEqual(2.f, mat(2, 1));
-			Assert::AreEqual(4.f, mat(1, 2));
+			Assert::AreEqual(4.f, mat(2, 1));
+			Assert::AreEqual(2.f, mat(1, 2));
 			Assert::AreEqual(5.f, mat(2, 2));
 			Assert::AreEqual(9.f, mat(3, 3));
 		}
@@ -117,7 +119,9 @@ namespace MatrixTests
 			Assert::AreEqual(6, result(3, 3));
 
 			Assert::AreEqual(20, compoundResult(1, 1));
-			Assert::AreEqual(16, compoundResult(3, 2));
+			Assert::AreEqual(22, compoundResult(1, 2));
+			Assert::AreEqual(20, compoundResult(1, 3));
+			Assert::AreEqual(16, compoundResult(2, 3));
 			Assert::AreEqual(6, compoundResult(3, 3));
 		}
 		TEST_METHOD(OperatorMultiplicationScalar)
@@ -137,7 +141,7 @@ namespace MatrixTests
 			Assert::AreEqual(2, result(3, 3));
 
 			Assert::AreEqual(6, compoundResult(1, 1));
-			Assert::AreEqual(4, compoundResult(3, 2));
+			Assert::AreEqual(4, compoundResult(2, 3));
 			Assert::AreEqual(2, compoundResult(3, 3));
 		}
 		TEST_METHOD(OperatorMultiplicationVector3)
@@ -236,7 +240,8 @@ namespace MatrixTests
 		{
 			CommonUtilities::Matrix4x4<float> mat;
 
-			Assert::AreEqual(0.f, mat(1, 1));
+			Assert::AreEqual(1.f, mat(1, 1));
+			Assert::AreEqual(0.f, mat(1, 2));
 		}
 		TEST_METHOD(CopyConstructor)
 		{
@@ -257,20 +262,20 @@ namespace MatrixTests
 			copy = mat;
 
 			Assert::AreEqual(1.f, mat(1, 1));
-			Assert::AreEqual(2.f, mat(2, 1));
-			Assert::AreEqual(4.f, mat(4, 1));
-			Assert::AreEqual(5.f, mat(1, 2));
-			Assert::AreEqual(9.f, mat(1, 3));
+			Assert::AreEqual(2.f, mat(1, 2));
+			Assert::AreEqual(4.f, mat(1, 4));
+			Assert::AreEqual(5.f, mat(2, 1));
+			Assert::AreEqual(9.f, mat(3, 1));
 
 			Assert::AreEqual(1.f, copy(1, 1));
-			Assert::AreEqual(2.f, copy(2, 1));
-			Assert::AreEqual(4.f, copy(4, 1));
-			Assert::AreEqual(5.f, copy(1, 2));
-			Assert::AreEqual(9.f, copy(1, 3));
+			Assert::AreEqual(2.f, copy(1, 2));
+			Assert::AreEqual(4.f, copy(1, 4));
+			Assert::AreEqual(5.f, copy(2, 1));
+			Assert::AreEqual(9.f, copy(3, 1));
 
-			Assert::AreEqual(13.f, copy(1, 4));
-			Assert::AreEqual(14.f, copy(2, 4));
-			Assert::AreEqual(15.f, copy(3, 4));
+			Assert::AreEqual(13.f, copy(4, 1));
+			Assert::AreEqual(14.f, copy(4, 2));
+			Assert::AreEqual(15.f, copy(4, 3));
 			Assert::AreEqual(16.f, copy(4, 4));
 		}
 		TEST_METHOD(ListInitializationFull)
@@ -340,12 +345,12 @@ namespace MatrixTests
 			Assert::AreEqual(23, result(1, 1));
 			Assert::AreEqual(56, result(2, 2));
 			Assert::AreEqual(11, result(3, 3));
-			Assert::AreEqual(20, result(3, 4));
+			Assert::AreEqual(20, result(4, 3));
 
 			Assert::AreEqual(23, compoundResult(1, 1));
 			Assert::AreEqual(56, compoundResult(2, 2));
 			Assert::AreEqual(11, compoundResult(3, 3));
-			Assert::AreEqual(20, compoundResult(3, 4));
+			Assert::AreEqual(20, compoundResult(4, 3));
 		}
 
 		TEST_METHOD(OperatorMultiplicationScalar)
@@ -364,12 +369,12 @@ namespace MatrixTests
 			Assert::AreEqual(6, result(1, 1));
 			Assert::AreEqual(12, result(2, 2));
 			Assert::AreEqual(2, result(3, 3));
-			Assert::AreEqual(2, result(3, 4));
+			Assert::AreEqual(2, result(4, 3));
 
 			Assert::AreEqual(6, compoundResult(1, 1));
 			Assert::AreEqual(12, compoundResult(2, 2));
 			Assert::AreEqual(2, compoundResult(3, 3));
-			Assert::AreEqual(2, compoundResult(3, 4));
+			Assert::AreEqual(2, compoundResult(4, 3));
 		}
 
 		TEST_METHOD(OperatorMultiplicationVector4)
