@@ -154,9 +154,9 @@ namespace MatrixTests
 			CommonUtilities::Vector3<int> vector{ 1, 2, 3 };
 			auto result = mat * vector;
 
-			Assert::AreEqual(6, result.x);
-			Assert::AreEqual(20, result.y);
-			Assert::AreEqual(21, result.z);
+			Assert::AreEqual(10, result.x);
+			Assert::AreEqual(18, result.y);
+			Assert::AreEqual(11, result.z);
 		}
 
 		TEST_METHOD(Equality)
@@ -343,7 +343,12 @@ namespace MatrixTests
 			compoundResult *= mat2;
 
 			Assert::AreEqual(23, result(1, 1));
+			Assert::AreEqual(39, result(1, 2));
+			Assert::AreEqual(24, result(1, 3));
+			Assert::AreEqual(37, result(1, 4));
 			Assert::AreEqual(56, result(2, 2));
+			Assert::AreEqual(25, result(2, 3));
+			Assert::AreEqual(39, result(2, 4));
 			Assert::AreEqual(11, result(3, 3));
 			Assert::AreEqual(20, result(4, 3));
 
@@ -379,22 +384,20 @@ namespace MatrixTests
 
 		TEST_METHOD(OperatorMultiplicationVector4)
 		{
+			CommonUtilities::Vector4<int> vector{ 1, 2, 3, 4 };
 			CommonUtilities::Matrix4x4<int> mat{
 				3, 3, 4, 2,
 				2, 6, 2, 3,
 				1, 1, 1, 4,
 				2, 4, 1, 3
 			};
-			CommonUtilities::Vector4<int> vector{ 1, 2, 3, 4 };
 
 			auto result = mat * vector;
-			CommonUtilities::Matrix4x4<int> compoundResult{ mat };
-			compoundResult *= 2;
 
-			Assert::AreEqual(8, result.x);
-			Assert::AreEqual(28, result.y);
-			Assert::AreEqual(24, result.z);
-			Assert::AreEqual(48, result.w);
+			Assert::AreEqual(18, result.x);
+			Assert::AreEqual(34, result.y);
+			Assert::AreEqual(15, result.z);
+			Assert::AreEqual(32, result.w);
 		}
 
 		TEST_METHOD(OperatorEquality)

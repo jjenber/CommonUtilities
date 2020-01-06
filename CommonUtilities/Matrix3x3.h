@@ -196,18 +196,9 @@ namespace CommonUtilities
 	inline Vector3<T> Matrix3x3<T>::operator*(const Vector3<T>& aVector) const
 	{
 		Vector3<T> result;
-		for (int i = 0; i < 3; i++)
-		{
-			result.x += myData[i * 3] * aVector.x;
-		}
-		for (int i = 0; i < 3; i++)
-		{
-			result.y += myData[i * 3 + 1] * aVector.y;
-		}
-		for (int i = 0; i < 3; i++)
-		{
-			result.z += myData[i * 3 + 2] * aVector.z;
-		}
+		result.x = (myData[0] * aVector.x) + (myData[3] * aVector.y) + (myData[6] * aVector.z);
+		result.y = (myData[1] * aVector.x) + (myData[4] * aVector.y) + (myData[7] * aVector.z);
+		result.z = (myData[2] * aVector.x) + (myData[5] * aVector.y) + (myData[8] * aVector.z);
 		return result;
 	}
 

@@ -35,7 +35,8 @@ namespace CommonUtilities
 		static Matrix4x4<T> CreateRotationAroundZ(T aAngleInRadians);
 		static Matrix4x4<T> Transpose(const Matrix4x4<T>& aMatrixToTranspose);
 		// Assumes aTransform is made up of nothing but rotations and translations.
-		static Matrix4x4<T> GetFastInverse(const Matrix4x4<T>& aTransform);		
+		static Matrix4x4<T> GetFastInverse(const Matrix4x4<T>& aTransform);
+		
 	private:
 		static const size_t myLength = 16;
 		T myData[myLength];
@@ -189,22 +190,10 @@ namespace CommonUtilities
 	inline Vector4<T> Matrix4x4<T>::operator*(const Vector4<T>& aVector) const
 	{
 		Vector4<T> result;
-		for (int i = 0; i < 4; i++)
-		{
-			result.x += myData[i * 4] * aVector.x;
-		}
-		for (int i = 0; i < 4; i++)
-		{
-			result.y += myData[i * 4 + 1] * aVector.y;
-		}
-		for (int i = 0; i < 4; i++)
-		{
-			result.z += myData[i * 4 + 2] * aVector.z;
-		}
-		for (int i = 0; i < 4; i++)
-		{
-			result.w += myData[i * 4 + 3] * aVector.w;
-		}
+		result.x = (myData[0] * aVector.x) + (myData[4] * aVector.y) + (myData[8] * aVector.z) + (myData[12] * aVector.w);
+		result.y = (myData[1] * aVector.x) + (myData[5] * aVector.y) + (myData[9] * aVector.z) + (myData[13] * aVector.w);
+		result.z = (myData[2] * aVector.x) + (myData[6] * aVector.y) + (myData[10] * aVector.z) + (myData[14] * aVector.w);
+		result.w = (myData[3] * aVector.x) + (myData[7] * aVector.y) + (myData[11] * aVector.z) + (myData[15] * aVector.w);
 		return result;
 	}
 
