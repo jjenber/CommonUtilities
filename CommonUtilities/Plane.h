@@ -24,8 +24,9 @@ namespace CommonUtilities
 
 	template<typename T>
 	inline Plane<T>::Plane(const Vector3<T>& aPoint0, const Vector3<T>& aPoint1, const Vector3<T>& aPoint2)
-		: Plane(aPoint0, Vector3<float>{ aPoint1 - aPoint0 }.Cross(aPoint2 - aPoint0).GetNormalized())
-	{}
+		: Plane(aPoint0, Vector3<T>{ aPoint1 - aPoint0 }.Cross(aPoint2 - aPoint0).GetNormalized())
+	{
+	}
 
 	template<typename T>
 	inline Plane<T>::Plane(const Vector3<T>& aPoint0, const Vector3<T>& aNormal)
@@ -38,6 +39,7 @@ namespace CommonUtilities
 	inline void Plane<T>::InitWith3Points(const Vector3<T>& aPoint0, const Vector3<T>& aPoint1, const Vector3<T>& aPoint2)
 	{
 		myNormal = Vector3<T>{ aPoint1 - aPoint0 }.Cross(aPoint2 - aPoint0).GetNormalized();
+		myPoint = aPoint0;
 	}
 
 	template<typename T>
@@ -56,6 +58,7 @@ namespace CommonUtilities
 	template<typename T>
 	inline bool Plane<T>::IsInside(const Vector3<T>& aPosition) const
 	{
-		return myNormal.Dot(aPosition - myPoint) <= 0;
+		auto val = myNormal.Dot(aPosition - myPoint) <= 0;
+		return val;
 	}
 }

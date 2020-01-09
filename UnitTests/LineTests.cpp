@@ -1,108 +1,269 @@
 #include "pch.h"
 #include "CppUnitTest.h"
 #include "..//CommonUtilities/Line.h"
-#include "..//CommonUtilities/LineVolume.h"
-#include <vector>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
-using namespace CommonUtilities;
+using Linef = CommonUtilities::Line<float>;
+using Lined = CommonUtilities::Line<double>;
+using Vector2f = CommonUtilities::Vector2<float>;
+using Vector2d = CommonUtilities::Vector2<double>;
 
-namespace LinesTests
-{
-	TEST_CLASS(Lines)
+namespace Assignment3LinesAndPlanes
+{		
+	TEST_CLASS(LineTests)
 	{
-		TEST_METHOD(CopyConstructor)
+	public:
+		
+		TEST_METHOD(L_IsInside)
 		{
-			Line<float> line({ 1.f, -1.f }, { 1.5f, 0 });
-			Line<float> copy = line;
-			Assert::AreEqual(line.GetNormal().x, copy.GetNormal().x);
-			Assert::AreEqual(line.GetNormal().y, copy.GetNormal().y);
+			// Test IsInside() of Line<float>
+			Linef line1f(Vector2f(-4.5f, -3.0f), Vector2f(0.0f, 6.0f));
+			Linef line2f(Vector2f(0.0f, 6.0f), Vector2f(4.5f, -3.0f));
+			Linef line3f(Vector2f(4.5f, -3.0f), Vector2f(-4.5f, -3.0f));
 
-			Assert::AreEqual(0.f, line.GetNormal().Dot(Vector2<float>{ 1.f, -1.f } -Vector2<float>{1.5f, 0}));
+			Vector2f point1f(0.0f, 0.0f);
+			Assert::IsTrue(line1f.IsInside(point1f), L"Point (0.0f, 0.0f) should be inside of Line<float> intersecting (-4.5f, -3.0f) and (0.0f, 6.0f)");
+			Assert::IsTrue(line2f.IsInside(point1f), L"Point (0.0f, 0.0f) should be inside of Line<float> intersecting (0.0f, 6.0f) and (4.5f, -3.0f)");
+			Assert::IsTrue(line3f.IsInside(point1f), L"Point (0.0f, 0.0f) should be inside of Line<float> intersecting (4.5f, -3.0f) and (-4.5f, -3.0f)");
+
+			Vector2f point2f(-4.0f, 0.0f);
+			Assert::IsFalse(line1f.IsInside(point2f), L"Point (-4.0f, 0.0f) should not be inside of Line<float> intersecting (-4.5f, -3.0f) and (0.0f, 6.0f)");
+			Assert::IsTrue(line2f.IsInside(point2f), L"Point (-4.0f, 0.0f) should be inside of Line<float> intersecting (0.0f, 6.0f) and (4.5f, -3.0f)");
+			Assert::IsTrue(line3f.IsInside(point2f), L"Point (-4.0f, 0.0f) should be inside of Line<float> intersecting (4.5f, -3.0f) and (-4.5f, -3.0f)");
+
+			Vector2f point3f(4.0f, 0.0f);
+			Assert::IsTrue(line1f.IsInside(point3f), L"Point (4.0f, 0.0f) should be inside of Line<float> intersecting (-4.5f, -3.0f) and (0.0f, 6.0f)");
+			Assert::IsFalse(line2f.IsInside(point3f), L"Point (4.0f, 0.0f) should not be inside of Line<float> intersecting (0.0f, 6.0f) and (4.5f, -3.0f)");
+			Assert::IsTrue(line3f.IsInside(point3f), L"Point (4.0f, 0.0f) should be inside of Line<float> intersecting (4.5f, -3.0f) and (-4.5f, -3.0f)");
+
+			Vector2f point4f(0.0f, -4.0f);
+			Assert::IsTrue(line1f.IsInside(point4f), L"Point (0.0f, -4.0f) should be inside of Line<float> intersecting (-4.5f, -3.0f) and (0.0f, 6.0f)");
+			Assert::IsTrue(line2f.IsInside(point4f), L"Point (0.0f, -4.0f) should be inside of Line<float> intersecting (0.0f, 6.0f) and (4.5f, -3.0f)");
+			Assert::IsFalse(line3f.IsInside(point4f), L"Point (0.0f, -4.0f) should not be inside of Line<float> intersecting (4.5f, -3.0f) and (-4.5f, -3.0f)");
+
+			// Test IsInside() of Line<double>
+			Lined line1d(Vector2d(-4.5, -3.0), Vector2d(0.0, 6.0));
+			Lined line2d(Vector2d(0.0, 6.0), Vector2d(4.5, -3.0));
+			Lined line3d(Vector2d(4.5, -3.0), Vector2d(-4.5, -3.0));
+
+			Vector2d point1d(0.0, 0.0);
+			Assert::IsTrue(line1d.IsInside(point1d), L"Point (0.0, 0.0) should be inside of Line<double> intersecting (-4.5, -3.0) and (0.0, 6.0)");
+			Assert::IsTrue(line2d.IsInside(point1d), L"Point (0.0, 0.0) should be inside of Line<double> intersecting (0.0, 6.0) and (4.5, -3.0)");
+			Assert::IsTrue(line3d.IsInside(point1d), L"Point (0.0, 0.0) should be inside of Line<double> intersecting (4.5, -3.0) and (-4.5, -3.0)");
+
+			Vector2d point2d(-4.0, 0.0);
+			Assert::IsFalse(line1d.IsInside(point2d), L"Point (-4.0, 0.0) should not be inside of Line<double> intersecting (-4.5, -3.0) and (0.0, 6.0)");
+			Assert::IsTrue(line2d.IsInside(point2d), L"Point (-4.0, 0.0) should be inside of Line<double> intersecting (0.0, 6.0) and (4.5, -3.0)");
+			Assert::IsTrue(line3d.IsInside(point2d), L"Point (-4.0, 0.0) should be inside of Line<double> intersecting (4.5, -3.0) and (-4.5, -3.0)");
+
+			Vector2d point3d(4.0, 0.0);
+			Assert::IsTrue(line1d.IsInside(point3d), L"Point (4.0f, 0.0f) should be inside of Line<double> intersecting (-4.5, -3.0) and (0.0, 6.0)");
+			Assert::IsFalse(line2d.IsInside(point3d), L"Point (4.0f, 0.0f) should not be inside of Line<double> intersecting (0.0, 6.0) and (4.5, -3.0)");
+			Assert::IsTrue(line3d.IsInside(point3d), L"Point (4.0f, 0.0f) should be inside of Line<double> intersecting (4.5, -3.0) and (-4.5, -3.0)");
+
+			Vector2d point4d(0.0, -4.0);
+			Assert::IsTrue(line1d.IsInside(point4d), L"Point (0.0f, -4.0f) should be inside of Line<double> intersecting (-4.5, -3.0) and (0.0f, 6.0)");
+			Assert::IsTrue(line2d.IsInside(point4d), L"Point (0.0f, -4.0f) should be inside of Line<double> intersecting (0.0, 6.0) and (4.5, -3.0)");
+			Assert::IsFalse(line3d.IsInside(point4d), L"Point (0.0f, -4.0f) should not be inside of Line<double> intersecting (4.5, -3.0) and (-4.5, -3.0)");
+
+			Vector2d pointOnLine1d(-4.5, -3.0);
+			Vector2d pointOnLine2d(0.0, 6.0);
+			Vector2d pointOnLine3d(4.5, -3.0);
 		}
-		TEST_METHOD(Assignment)
-		{
-			Line<float> line;
-			line.InitWith2Points({ 1.f, -1.f }, { 1.5f, 0 });
-			Line<float> copy{ {1.2f, -3.f }, { -3.2f, 3.2f } };
 
-			copy = line;
-			Assert::AreEqual(line.GetNormal().x, copy.GetNormal().x);
-			Assert::AreEqual(line.GetNormal().y, copy.GetNormal().y);
+		TEST_METHOD(L_On_Line)
+		{
+			// Test IsInside() of Line<float> with points that are on the lines
+			Linef line1f(Vector2f(0.0f, 6.0f), Vector2f(-4.5f, -3.0f));
+			Linef line2f(Vector2f(4.5f, -3.0f), Vector2f(0.0f, 6.0f));
+			Linef line3f(Vector2f(-4.5f, -3.0f), Vector2f(4.5f, -3.0f));
+			
+			Vector2f pointOnLine1f(-4.5f, -3.0f);
+			Vector2f pointOnLine2f(0.0f, 6.0f);
+			Vector2f pointOnLine3f(4.5f, -3.0f);
+
+			Assert::IsTrue(line1f.IsInside(pointOnLine1f), L"Point (-4.5f, -3.0f) lies on the Line<float> intersecting (0.0f, 6.0f) and (-4.5f, -3.0f) and should be 'inside'.");
+			Assert::IsTrue(line1f.IsInside(pointOnLine2f), L"Point (0.0f, 6.0f) lies on the Line<float> intersecting (0.0f, 6.0f) and (-4.5f, -3.0f) and should be 'inside'.");
+			Assert::IsFalse(line1f.IsInside(pointOnLine3f), L"Point (4.5f, -3.0f) lies outside of the Line<float> intersecting (0.0f, 6.0f) and (-4.5f, -3.0f) and should not be 'inside'.");
+
+			Assert::IsFalse(line2f.IsInside(pointOnLine1f), L"Point (-4.5f, -3.0f) lies outside of the Line<float> intersecting (4.5f, -3.0f) and (0.0f, 6.0f) and should not be 'inside'.");
+			Assert::IsTrue(line2f.IsInside(pointOnLine2f), L"Point (0.0f, 6.0f) lies on the Line<float> intersecting (4.5f, -3.0f) and (0.0f, 6.0f) and should be 'inside'.");
+			Assert::IsTrue(line2f.IsInside(pointOnLine3f), L"Point (4.5f, -3.0f) lies on the Line<float> intersecting (4.5f, -3.0f) and (0.0f, 6.0f) and should be 'inside'.");
+
+			Assert::IsTrue(line3f.IsInside(pointOnLine1f), L"Point (-4.5f, -3.0f) lies on the Line<float> intersecting (-4.5f, -3.0f) and (4.5f, -3.0f) and should be 'inside'.");
+			Assert::IsFalse(line3f.IsInside(pointOnLine2f), L"Point (0.0f, 6.0f) lies outside of the Line<float> intersecting (-4.5f, -3.0f) and (4.5f, -3.0f) and should not be 'inside'.");
+			Assert::IsTrue(line3f.IsInside(pointOnLine3f), L"Point (4.5f, -3.0f) lies on the Line<float> intersecting (-4.5f, -3.0f) and (4.5f, -3.0f) and should be 'inside'.");
+
+			// Test IsInside() of Line<double> with points that are on the lines
+			Lined line1d(Vector2d(0.0, 6.0), Vector2d(-4.5, -3.0));
+			Lined line2d(Vector2d(4.5, -3.0), Vector2d(0.0, 6.0));
+			Lined line3d(Vector2d(-4.5, -3.0), Vector2d(4.5, -3.0));
+
+			Vector2d pointOnLine1d(-4.5, -3.0);
+			Vector2d pointOnLine2d(0.0, 6.0);
+			Vector2d pointOnLine3d(4.5, -3.0);
+
+			Assert::IsTrue(line1d.IsInside(pointOnLine1d), L"Point (-4.5, -3.0) lies on the Line<double> intersecting (0.0, 6.0) and (-4.5, -3.0) and should be 'inside'.");
+			Assert::IsTrue(line1d.IsInside(pointOnLine2d), L"Point (0.0, 6.0) lies on the Line<double> intersecting (0.0, 6.0) and (-4.5, -3.0) and should be 'inside'.");
+			Assert::IsFalse(line1d.IsInside(pointOnLine3d), L"Point (4.5, -3.0) lies outside of the Line<double> intersecting (0.0, 6.0) and (-4.5, -3.0) and should not be 'inside'.");
+
+			Assert::IsFalse(line2d.IsInside(pointOnLine1d), L"Point (-4.5, -3.0) lies outside of the Line<double> intersecting (4.5, -3.0) and (0.0, 6.0) and should not be 'inside'.");
+			Assert::IsTrue(line2d.IsInside(pointOnLine2d), L"Point (0.0, 6.0) lies on the Line<double> intersecting (4.5, -3.0) and (0.0, 6.0) and should be 'inside'.");
+			Assert::IsTrue(line2d.IsInside(pointOnLine3d), L"Point (4.5, -3.0) lies on the Line<double> intersecting (4.5, -3.0) and (0.0, 6.0) and should be 'inside'.");
+
+			Assert::IsTrue(line3d.IsInside(pointOnLine1d), L"Point (-4.5, -3.0) lies on the Line<double> intersecting (-4.5, -3.0) and (4.5, -3.0) and should be 'inside'.");
+			Assert::IsFalse(line3d.IsInside(pointOnLine2d), L"Point (0.0, 6.0) lies outside of the Line<double> intersecting (-4.5, -3.0) and (4.5, -3.0) and should not be 'inside'.");
+			Assert::IsTrue(line3d.IsInside(pointOnLine3d), L"Point (4.5, -3.0) lies on the Line<double> intersecting (-4.5, -3.0) and (4.5, -3.0) and should be 'inside'.");
 		}
 
-		TEST_METHOD(InitWithPointAndDirection)
+		TEST_METHOD(L_2_Points)
 		{
-			Line<float> line;
-			auto direction = Vector2<float>{ 1.5f, 0.f } -Vector2<float>{ 1.f, -1.f};
-			line.InitWithPointAndDirection(Vector2<float>{ 1.5f, 0.f }, direction.GetNormalized());
+			// Testing the Line<float> InitWith2Points() function with a bunch of random numbers.
+			for (int i = 0; i < 100; ++i)
+			{
+				float x = 2.f;
+				float y = 4.1f;
 
-			Assert::AreEqual(0.f, line.GetNormal().Dot(Vector2<float>{1.5f, 0} -Vector2<float>{ 1.f, -1.f }));
+				float p0x = -2.3f;
+				float p0y = 1.2f;
+
+				float p1x = 2.f;
+				float p1y = 3.f;
+
+				float directionX = p1x - p0x;
+				float directionY = p1y - p0y;
+
+				float normalX = -directionY;
+				float normalY = directionX;
+
+				float lineToPointX = x - p0x;
+				float lineToPointY = y - p0y;
+
+				float dotLineToPoint = (lineToPointX * normalX) + (lineToPointY * normalY);
+
+				Vector2f point(x, y);
+				Vector2f pointOnLine(p0x, p0y);
+				Linef lineConstructor(Vector2f(p0x, p0y), Vector2f(p1x, p1y));
+				Linef lineInit;
+				lineInit.InitWith2Points(Vector2f(p0x, p0y), Vector2f(p1x, p1y));
+
+				// Tolerance is 0.000001f, which is considered as being 0, that is: the point is on the line which is "inside".
+				Assert::AreEqual(dotLineToPoint < 0.000001f, lineConstructor.IsInside(point), L"IsInside of Line<float> is not calculated correctly when using the constructor that takes two points.");
+				Assert::IsTrue(lineConstructor.IsInside(pointOnLine), L"Point on the Line<float> is not considered 'inside' when using the constructor that takes two points.");
+
+				// Tolerance is 0.000001f, which is considered as being 0, that is: the point is on the line which is "inside".
+				Assert::AreEqual(dotLineToPoint < 0.000001f, lineInit.IsInside(point), L"IsInside of Line<float> is not calculated correctly when using the InitWith2Points() function.");
+				Assert::IsTrue(lineInit.IsInside(pointOnLine), L"Point on the Line<float> is not considered 'inside' when using the InitWith2Points() function.");
+			}
+
+			// Testing the Line<double> InitWith2Points() function with a bunch of random numbers.
+			for (int i = 0; i < 100; ++i)
+			{
+				double x = 23.1;
+				double y = 23.1;
+
+				double p0x = 21.5;
+				double p0y = 21.5;
+
+				double p1x = 22.5;
+				double p1y = 22.5;
+
+				double directionX = p1x - p0x;
+				double directionY = p1y - p0y;
+				double lengthInv = 1.0f / sqrt((directionX * directionX) + (directionY * directionY));
+
+				double normalX = -directionY * lengthInv;
+				double normalY = directionX * lengthInv;
+
+				double lineToPointX = x - p0x;
+				double lineToPointY = y - p0y;
+
+				double dotLineToPoint = (lineToPointX * normalX) + (lineToPointY * normalY);
+
+				Vector2d point(x, y);
+				Vector2d pointOnLine(p0x, p0y);
+				Lined lineConstructor(Vector2d(p0x, p0y), Vector2d(p1x, p1y));
+				Lined lineInit;
+				lineInit.InitWith2Points(Vector2d(p0x, p0y), Vector2d(p1x, p1y));
+
+				// Tolerance is 0.000001, which is considered as being 0, that is: the point is on the line which is "inside".
+				Assert::AreEqual(dotLineToPoint < 0.000001, lineConstructor.IsInside(point), L"IsInside of Line<double> is not calculated correctly when using the constructor that takes two points.");
+				Assert::IsTrue(lineConstructor.IsInside(pointOnLine), L"Point on the Line<double> is not considered 'inside' when using the constructor that takes two points.");
+
+				// Tolerance is 0.000001, which is considered as being 0, that is: the point is on the line which is "inside".
+				Assert::AreEqual(dotLineToPoint < 0.000001, lineInit.IsInside(point), L"IsInside of Line<double> is not calculated correctly when using the InitWith2Points() function.");
+				Assert::IsTrue(lineInit.IsInside(pointOnLine), L"Point on the Line<double> is not considered 'inside' when using the InitWith2Points() function.");
+			}
 		}
 
-		TEST_METHOD(GetDirection)
+		TEST_METHOD(L_Init_With_Point_And_Direction)
 		{
-			Line<float> line;
-			auto direction = (Vector2<float>{ 1.f, -1.f} -Vector2<float>{ 1.5f, 0.f }).GetNormalized();
-			line.InitWithPointAndDirection(Vector2<float>{ 1.5f, 0.f }, direction);
+			// Testing the Line<float> InitWithPointAndDirection() function with a bunch of random numbers.
+			for (int i = 0; i < 100; ++i)
+			{
+				float x = 43.1f;
+				float y = 21.f;
 
-			/*Assert::AreEqual(direction.x, line.GetDirection().x);
-			Assert::AreEqual(direction.y, line.GetDirection().y);*/
-		}
+				float p0x = 3.f;
+				float p0y = 2.3f;
 
-		TEST_METHOD(IsInside)
-		{
-			Line<float> line;
-			auto direction = Vector2<float>{ 1.5f, 0.f } -Vector2<float>{ 1.f, -1.f};
-			line.InitWithPointAndDirection(Vector2<float>{ 1.5f, 0.f }, direction.GetNormalized());
+				float p1x = 3.6f;
+				float p1y = 12.4f;
 
-			// --Rough sketch--!!
-			// Normal is pointing "positive left"
-			/*              /
-			---0----1.0---1.5-----2.0-
-						  /
-			  normal: \  /
-					   \/
-					   /
-					  /
-		   -1.0      X (1, -1)
-					/
-			*/
-			Assert::IsTrue(line.IsInside({ 2.5f, -1.f }));
-			Assert::IsFalse(line.IsInside({ 0, -1.f }));
-		}
-	};
+				float directionX = p1x - p0x;
+				float directionY = p1y - p0y;
 
-	TEST_CLASS(LineVolumes)
-	{
-		TEST_METHOD(IsInside)
-		{
-			Vector2<float> point0{ -1.f, 0.f };
-			Vector2<float> point1{ 1.f, 2.f };
-			Vector2<float> point2{ -1.f, -2.f };
+				float normalX = -directionY;
+				float normalY = directionX;
 
-			Line<float> line0(point0, point1);
-			Line<float> line1(point1, point2);
-			Line<float> line2(point2, point0);
-			LineVolume<float> volume{ { line0, line1, line2 } };
-			Assert::IsTrue(volume.IsInside({ 0, 0 }));
-			Assert::IsFalse(volume.IsInside({-1.f, 1.f}));
-		}
-		TEST_METHOD(AddLine)
-		{
-			Vector2<float> point0{ -1.f, 0.f };
-			Vector2<float> point1{ 1.f, 2.f };
-			Vector2<float> point2{ -1.f, -2.f };
+				float lineToPointX = x - p0x;
+				float lineToPointY = y - p0y;
 
-			Line<float> line0(point0, point1);
-			Line<float> line1(point1, point2);
-			Line<float> line2(point2, point0);
-			LineVolume<float> volume;
-			volume.AddLine(line0);
-			volume.AddLine(line1);
-			volume.AddLine(line2);
-			Assert::IsTrue(volume.IsInside({ 0, 0 }));
-			Assert::IsFalse(volume.IsInside({ -1.f, 1.f }));
+				float dotLineToPoint = (lineToPointX * normalX) + (lineToPointY * normalY);
+
+				Vector2f point(x, y);
+				Vector2f pointOnLine(p0x, p0y);
+				Linef line;
+				line.InitWithPointAndDirection(Vector2f(p0x, p0y), Vector2f(directionX, directionY));
+
+				// Tolerance is 0.000001f, which is considered as being 0, that is: the point is on the line which is "inside".
+				Assert::AreEqual(dotLineToPoint < 0.000001f, line.IsInside(point), L"IsInside of Line<float> is not calculated correctly.");
+				Assert::IsTrue(line.IsInside(pointOnLine), L"Point on the Line<float> is not considered 'inside'.");
+			}
+
+			// Testing the Line<double> InitWithPointAndDirection() function with a bunch of random numbers.
+			for (int i = 0; i < 100; ++i)
+			{
+				double x = 23.1;
+				double y = 25.1;
+
+				double p0x = 02.5;
+				double p0y = 32.5;
+
+				double p1x = 12.5;
+				double p1y = 22.5;
+
+				double directionX = p1x - p0x;
+				double directionY = p1y - p0y;
+				double lengthInv = 1.0f / sqrt((directionX * directionX) + (directionY * directionY));
+
+				double normalX = -directionY * lengthInv;
+				double normalY = directionX * lengthInv;
+
+				double lineToPointX = x - p0x;
+				double lineToPointY = y - p0y;
+
+				double dotLineToPoint = (lineToPointX * normalX) + (lineToPointY * normalY);
+
+				Vector2d point(x, y);
+				Vector2d pointOnLine(p0x, p0y);
+				Lined line;
+				line.InitWithPointAndDirection(Vector2d(p0x, p0y), Vector2d(directionX, directionY));
+
+				// Tolerance is 0.000001, which is considered as being 0, that is: the point is on the line which is "inside".
+				Assert::AreEqual(dotLineToPoint < 0.000001, line.IsInside(point), L"IsInside of Line<double> is not calculated correctly.");
+				Assert::IsTrue(line.IsInside(pointOnLine), L"Point on the Line<double> is not considered 'inside'.");
+			}
 		}
 	};
 }
