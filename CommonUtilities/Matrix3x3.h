@@ -21,11 +21,11 @@ namespace CommonUtilities
 		bool operator==(const Matrix3x3<T>& aMatrix) const;
 		bool operator!=(const Matrix3x3<T>& aMatrix) const;
 
-		Vector3<T> operator*(const Vector3<T>& aVector) const;
 		Matrix3x3<T> operator+(const Matrix3x3<T>& aMatrix) const;
 		Matrix3x3<T> operator-(const Matrix3x3<T>& aMatrix) const;
 		Matrix3x3<T> operator*(const Matrix3x3<T>& aMatrix) const;
 		Matrix3x3<T> operator*(const T& aScalar) const;
+		Vector3<T> operator*(const Vector3<T>& aVector) const;
 		Matrix3x3<T>& operator+=(const Matrix3x3<T>& aMatrix);
 		Matrix3x3<T>& operator-=(const Matrix3x3<T>& aMatrix);
 		Matrix3x3<T>& operator*=(const Matrix3x3<T>& aMatrix);
@@ -35,11 +35,21 @@ namespace CommonUtilities
 		static Matrix3x3<T> CreateRotationAroundY(const T aAngleInRadians);
 		static Matrix3x3<T> CreateRotationAroundZ(const T aAngleInRadians);
 		static Matrix3x3<T> Transpose(const Matrix3x3<T>& aMatrixToTranspose);
+
 	private:
 		static const size_t myLength = 9;
 		T myData[myLength];
 	};
 	
+	template <typename T> Vector3<T> operator*(const Vector3<T>& aVector, const Matrix3x3<T> aMatrix)
+	{
+		Vector3<T> result;
+		result.x = (aMatrix(1, 1) * aVector.x) + (aMatrix(2, 1) * aVector.y) + (aMatrix(3, 1) * aVector.z);
+		result.y = (aMatrix(1, 2) * aVector.x) + (aMatrix(2, 2) * aVector.y) + (aMatrix(3, 2) * aVector.z);
+		result.z = (aMatrix(1, 3) * aVector.x) + (aMatrix(2, 3) * aVector.y) + (aMatrix(3, 3) * aVector.z);
+		return result;
+	};
+
 #pragma region Constructors
 	template <typename T> Matrix3x3<T>::Matrix3x3() : myData() 
 	{
@@ -68,8 +78,8 @@ namespace CommonUtilities
 	{
 		const size_t rowLength = sizeof(T) * 3;
 		std::memcpy(myData,     &aMatrix(1, 1), rowLength);
-		std::memcpy(myData + 3, &aMatrix(1, 2), rowLength);
-		std::memcpy(myData + 6, &aMatrix(1, 3), rowLength);
+		std::memcpy(myData + 3, &aMatrix(2, 1), rowLength);
+		std::memcpy(myData + 6, &aMatrix(3, 1), rowLength);
 	}
 #pragma endregion Constructors
 
@@ -183,16 +193,6 @@ namespace CommonUtilities
 		return result *= aScalar;
 	}
 	template<typename T>
-	inline Matrix3x3<T>& Matrix3x3<T>::operator*=(const T& aScalar)
-	{
-		for (int i = 0; i < myLength; i++)
-		{
-			myData[i] *= aScalar;
-		}
-		return *this;
-	}
-
-	template<typename T>
 	inline Vector3<T> Matrix3x3<T>::operator*(const Vector3<T>& aVector) const
 	{
 		Vector3<T> result;
@@ -200,6 +200,15 @@ namespace CommonUtilities
 		result.y = (myData[1] * aVector.x) + (myData[4] * aVector.y) + (myData[7] * aVector.z);
 		result.z = (myData[2] * aVector.x) + (myData[5] * aVector.y) + (myData[8] * aVector.z);
 		return result;
+	}
+	template<typename T>
+	inline Matrix3x3<T>& Matrix3x3<T>::operator*=(const T& aScalar)
+	{
+		for (int i = 0; i < myLength; i++)
+		{
+			myData[i] *= aScalar;
+		}
+		return *this;
 	}
 
 #pragma endregion Operators

@@ -1,6 +1,6 @@
 #pragma once
 #include <cassert>
-
+#include <initializer_list>
 namespace CommonUtilities
 {
 	template <typename T, int size>
