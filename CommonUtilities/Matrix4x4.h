@@ -1,7 +1,7 @@
 #pragma once
 #include <assert.h>
 #include <initializer_list>
-#include "Vector4.h"
+#include "Vector.h"
 
 namespace CommonUtilities
 {
@@ -30,13 +30,18 @@ namespace CommonUtilities
 		Matrix4x4<T>& operator*=(const Matrix4x4<T>& aMatrix);
 		Matrix4x4<T>& operator*=(const T& aScalar);
 
+		Vector3<T> GetForward() const;
+		Vector3<T> GetUp() const;
+		Vector3<T> GetRight() const;
+
+		void Translate(const Vector3<T>& aDirection);
+
 		static Matrix4x4<T> CreateRotationAroundX(T aAngleInRadians);
 		static Matrix4x4<T> CreateRotationAroundY(T aAngleInRadians);
 		static Matrix4x4<T> CreateRotationAroundZ(T aAngleInRadians);
 		static Matrix4x4<T> Transpose(const Matrix4x4<T>& aMatrixToTranspose);
-		
-		// Assumes aTransform is made up of nothing but rotations and translations.
 		static Matrix4x4<T> GetFastInverse(const Matrix4x4<T>& aTransform);
+		
 	private:
 		static const size_t myLength = 16;
 		T myData[myLength];
@@ -197,6 +202,7 @@ namespace CommonUtilities
 		return *this;
 	}
 
+
 	template<typename T>
 	inline Vector4<T> Matrix4x4<T>::operator*(const Vector4<T>& aVector) const
 	{
@@ -207,8 +213,47 @@ namespace CommonUtilities
 		result.w = (myData[3] * aVector.x) + (myData[7] * aVector.y) + (myData[11] * aVector.z) + (myData[15] * aVector.w);
 		return result;
 	}
-
 #pragma endregion Operators
+	template<typename T>
+	inline Vector3<T> Matrix4x4<T>::GetForward() const
+	{
+		Matrix4x4<T> rotation = *this;
+		rotation(4, 1) = 0;
+		rotation(4, 2) = 0;
+		rotation(4, 3) = 0;
+		auto result = rotation * Vector4<T> { 0, 0, 1.f, 1.f };
+		return { result.x, result.y, result.z };
+	}
+
+	template<typename T>
+	inline Vector3<T> Matrix4x4<T>::GetUp() const
+	{
+		Matrix4x4<T> rotation = *this;
+		rotation(4, 1) = 0;
+		rotation(4, 2) = 0;
+		rotation(4, 3) = 0;
+		auto result = rotation * Vector4<T> { 0, 1.f, 0, 1.f };
+		return { result.x, result.y, result.z };
+	}
+
+	template<typename T>
+	inline Vector3<T> Matrix4x4<T>::GetRight() const
+	{
+		Matrix4x4<T> rotation = *this;
+		rotation(4, 1) = 0;
+		rotation(4, 2) = 0;
+		rotation(4, 3) = 0;
+		auto result = rotation * Vector4<T> { 1.f, 0, 0, 1.f };
+		return { result.x, result.y, result.z };
+	}
+
+	template<typename T>
+	void Matrix4x4<T>::Translate(const Vector3<T>& aDirection)
+	{
+		myData[12] += aDirection.x;
+		myData[13] += aDirection.y;
+		myData[14] += aDirection.z;
+	}
 
 #pragma region Static Functions
 
