@@ -182,6 +182,7 @@
     <ClCompile Include="PlaneTests.cpp" />
     <ClCompile Include="PlaneVolumeTests.cpp" />
     <ClCompile Include="Shared\Utility.cpp" />
+    <ClCompile Include="VectorTests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

@@ -26,6 +26,9 @@ namespace CommonUtilities
 
 		T Dot(const Vector3<T>& aVector) const;
 		Vector3<T> Cross(const Vector3<T>& aVector) const;
+
+		static Vector3<T> Abs(const Vector3<T>& aVector);
+		static T Distance(const Vector3<T>& aVector0, const Vector3<T>& aVector1);
 	};
 
 	template <class T> Vector3<T> operator+(const Vector3<T>& aVector0, const Vector3<T>& aVector1);
@@ -171,4 +174,22 @@ namespace CommonUtilities
 	}
 
 #pragma endregion OperatorDefinitions
+
+#pragma region Static Functions
+	template <class T>
+	static Vector3<T> Abs(const Vector3<T>& aVector)
+	{
+		return { std::abs(aVector.x), std::abs(aVector.y), std::abs(aVector.z) };
+	}
+
+	template<class T>
+	inline T Vector3<T>::Distance(const Vector3<T>& aVector0, const Vector3<T>& aVector1)
+	{
+		const Vector3<T> direction = aVector1 - aVector0;
+		return std::sqrt(
+			std::pow(direction.x, 2) +
+			std::pow(direction.y, 2) +
+			std::pow(direction.z, 2));
+	}
+#pragma endregion Static Functions
 }

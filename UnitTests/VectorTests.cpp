@@ -237,6 +237,14 @@ namespace MathVectors
 			Assert::AreEqual(44.f, dot);
 		}
 
+		TEST_METHOD(Distance)
+		{
+			Vector3<float> v1(4.f, 1.f, -8.f);
+			Vector3<float> v2(2.f, 4.f, -4.f);
+			float dist = Vector3<float>::Distance(v1, v2);
+			Assert::IsTrue(dist < 1000.f);
+		}
+
 		TEST_METHOD(OperatorAddition)
 		{
 			Vector3<float> vPos(5.f, 0.f, 3.f);
