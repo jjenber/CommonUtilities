@@ -177,19 +177,19 @@ namespace CommonUtilities
 
 #pragma region Static Functions
 	template <class T>
-	static Vector3<T> Abs(const Vector3<T>& aVector)
+	inline Vector3<T> Abs(const Vector3<T>& aVector)
 	{
 		return { std::abs(aVector.x), std::abs(aVector.y), std::abs(aVector.z) };
 	}
 
-	template<class T>
+	template <class T>
 	inline T Vector3<T>::Distance(const Vector3<T>& aVector0, const Vector3<T>& aVector1)
 	{
 		const Vector3<T> direction = aVector1 - aVector0;
 		return std::sqrt(
-			std::pow(direction.x, 2) +
-			std::pow(direction.y, 2) +
-			std::pow(direction.z, 2));
+		std::pow(direction.x, 2) + 
+		std::pow(direction.y, 2) +
+		std::pow(direction.z, 2));
 	}
 #pragma endregion Static Functions
 }
