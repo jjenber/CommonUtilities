@@ -168,6 +168,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AABB3DTests.cpp" />
+    <ClCompile Include="IntersectionTests.cpp" />
     <ClCompile Include="LineTests.cpp" />
     <ClCompile Include="LineVolumeTests.cpp" />
     <ClCompile Include="Matrix3x3Tests.cpp" />
@@ -182,6 +184,7 @@
     <ClCompile Include="PlaneTests.cpp" />
     <ClCompile Include="PlaneVolumeTests.cpp" />
     <ClCompile Include="Shared\Utility.cpp" />
+    <ClCompile Include="SphereTests.cpp" />
     <ClCompile Include="VectorTests.cpp" />
   </ItemGroup>
   <ItemGroup>

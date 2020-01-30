@@ -45,6 +45,15 @@
     <ClCompile Include="VectorTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AABB3DTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IntersectionTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SphereTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">

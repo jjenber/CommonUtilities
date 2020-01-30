@@ -16,10 +16,11 @@ namespace CommonUtilities
 		bool IsInside(const Vector3<T>& aPosition) const;
 		
 		const Vector3<T>& GetNormal() const;
-	
+		const Vector3<T>& GetPoint() const;
+		
 	private:
-		Vector3<T> myNormal;
 		Vector3<T> myPoint;
+		Vector3<T> myNormal;
 	};
 
 	template<typename T>
@@ -53,6 +54,12 @@ namespace CommonUtilities
 	inline const Vector3<T>& Plane<T>::GetNormal() const
 	{
 		return myNormal;
+	}
+
+	template<typename T>
+	inline const Vector3<T>& Plane<T>::GetPoint() const
+	{
+		return myPoint;
 	}
 
 	template<typename T>
