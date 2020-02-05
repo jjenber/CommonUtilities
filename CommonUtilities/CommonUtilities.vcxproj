@@ -27,6 +27,7 @@
     <ClInclude Include="Matrix4x4.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="PlaneVolume.h" />
+    <ClInclude Include="Random.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="StaticArray.h" />
@@ -42,6 +43,7 @@
     <ClCompile Include="DL_StackWalker.cpp" />
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="JsonUtility.cpp" />
+    <ClCompile Include="Random.cpp" />
     <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
