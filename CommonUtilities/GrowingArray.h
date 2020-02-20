@@ -333,7 +333,7 @@ namespace CommonUtilities
 	template<typename T, typename SizeType>
 	inline void GrowingArray<T, SizeType>::Free()
 	{
-		for (SizeType i = mySize - SizeType(1); i >= 0; i--)
+		for (int i = static_cast<int>(mySize) - 1; i >= 0; i--)
 		{
 			(myData + i)->~T();
 		}
