@@ -15,6 +15,8 @@
     <ClInclude Include="DL_assert.h" />
     <ClInclude Include="DL_Debug.h" />
     <ClInclude Include="DL_StackWalker.h" />
+    <ClInclude Include="DoublyLinkedList.h" />
+    <ClInclude Include="DoublyLinkedListNode.h" />
     <ClInclude Include="GrowingArray.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="Intersection.h" />

@@ -54,6 +54,12 @@
     <ClCompile Include="SphereTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DoublyLinkedListTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GrowingArrayTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">

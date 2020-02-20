@@ -169,6 +169,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AABB3DTests.cpp" />
+    <ClCompile Include="DoublyLinkedListTests.cpp" />
+    <ClCompile Include="GrowingArrayTests.cpp" />
     <ClCompile Include="IntersectionTests.cpp" />
     <ClCompile Include="LineTests.cpp" />
     <ClCompile Include="LineVolumeTests.cpp" />

@@ -93,6 +93,12 @@
     <ClInclude Include="Random.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DoublyLinkedList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DoublyLinkedListNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DL_Debug.cpp">
