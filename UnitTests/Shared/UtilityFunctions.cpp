@@ -1,5 +1,4 @@
-#include "Utility.hpp"
-#include <random>
+#include "stdafx.h"
 #include "UtilityFunctions.hpp"
 
 namespace TestUtility
@@ -8,7 +7,8 @@ namespace TestUtility
 
 	float GetRandomFloat()
 	{
-		return GetRandomFloat(0, 1.f);
+		std::uniform_real_distribution<float> rnd(-100000.0f, 100000.0f);
+		return rnd(rEngine);
 	}
 
 	float GetRandomFloat(float aMin, float aMax)
@@ -17,9 +17,9 @@ namespace TestUtility
 		return rnd(rEngine);
 	}
 
-	double GetRandomDouble(double aMin, double aMax)
+	int GetRandomInt()
 	{
-		std::uniform_real_distribution<double> rnd(aMin, aMax);
+		std::uniform_int_distribution<int> rnd(-100000, 100000);
 		return rnd(rEngine);
 	}
 

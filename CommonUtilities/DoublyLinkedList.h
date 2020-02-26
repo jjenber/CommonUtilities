@@ -117,10 +117,11 @@ namespace CommonUtilities
 		{
 			if (aNode == itr)
 			{
-				itr->myPrevious->myNext = newNode;
-				aNode->myPrevious       = newNode;
-				newNode->myPrevious     = itr;
-				newNode->myNext         = aNode;
+				newNode->myNext = aNode;
+				newNode->myPrevious = aNode->myPrevious;
+
+				aNode->myPrevious->myNext = newNode;
+				aNode->myPrevious = newNode;
 				++mySize;
 				return;
 			}
@@ -189,6 +190,11 @@ namespace CommonUtilities
 				}
 				--mySize;
 				delete itr;
+				if (mySize == 0)
+				{
+					myFirst = nullptr;
+					myLast = nullptr;
+				}
 				return;
 			}
 			itr = itr->myNext;
