@@ -1,14 +1,16 @@
 #include "Random.h"
 
 static std::default_random_engine generator;
+static unsigned int ourSeed = generator.default_seed;
 
 unsigned int Random::GetSeed()
 {
-	return generator.default_seed;
+	return ourSeed;
 }
 
 void Random::SetSeed(unsigned int aSeed)
 {
+	ourSeed = aSeed;
 	generator.seed(aSeed);
 }
 
