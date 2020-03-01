@@ -474,6 +474,17 @@ namespace GrowingArrayTest
 	TEST_CLASS(Insert)
 	{
 	public:
+		TEST_METHOD(InsertAtZeroStrings)
+		{
+			GrowingArray<std::string, int> vector;
+			vector.Init();
+			vector.Insert(0, "1");
+			Assert::AreEqual("1", vector[0].c_str());
+
+			vector.Insert(0, "0");
+			Assert::AreEqual("0", vector[0].c_str());
+			Assert::AreEqual("1", vector[1].c_str());
+		}
 		TEST_METHOD(InsertAtZero)
 		{
 			GrowingArray<int, int> vector;

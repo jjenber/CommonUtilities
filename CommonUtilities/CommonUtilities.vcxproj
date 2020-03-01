@@ -29,6 +29,7 @@
     <ClInclude Include="Matrix4x4.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="PlaneVolume.h" />
+    <ClInclude Include="Queue.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="Sphere.h" />
