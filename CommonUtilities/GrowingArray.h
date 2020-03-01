@@ -6,6 +6,8 @@ namespace CommonUtilities
 	template<typename T, typename SizeType = unsigned short>
 	class GrowingArray
 	{
+		template <class U> friend class Queue;
+
 	public:
 		GrowingArray();
 		GrowingArray(SizeType aReservedSize, bool aUseSafeModeFlag = true);
@@ -189,7 +191,7 @@ namespace CommonUtilities
 			const SizeType memSize = sizeof(T) * (static_cast<size_t>(mySize) - aIndex);
 			std::memcpy(myData + aIndex + SizeType(1), myData + aIndex, memSize);
 		}
-		myData[aIndex] = aValue;
+		new (myData + aIndex) T(aValue);
 		++mySize;
 	}
 
