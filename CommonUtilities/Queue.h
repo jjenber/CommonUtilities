@@ -1,6 +1,6 @@
 #pragma once
 #include "GrowingArray.h"
-#include <queue>
+
 namespace CommonUtilities
 {
 	template <class T>
@@ -65,16 +65,14 @@ namespace CommonUtilities
 			{
 				Grow();
 			}
-			else
-				myBack++;
-			myData.Add(T());
-			myData[myBack] = aValue;
-			mySize++;
-			
+			myData.Add(aValue);
+			myBack = (myBack + 1) % myData.mySize;
+			++mySize;
 			return;
 		}
-		myBack = myBack == myData.mySize - 1 ? 0 : myBack + 1;
-		myData[myBack] = aValue;
+
+		myBack = (myBack + 1) % myData.mySize;
+		new (myData.myData + myBack) T(aValue);
 		++mySize;
 	}
 	template<class T>
@@ -99,7 +97,7 @@ namespace CommonUtilities
 			if (i == myBack)
 			{
 				myFront = 0;
-				myBack = mySize;
+				myBack = mySize - 1;
 				break;
 			}
 		}
