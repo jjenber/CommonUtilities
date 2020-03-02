@@ -183,7 +183,7 @@ namespace CommonUtilities
 		{
 			for (SizeType i = mySize; i > aIndex; i--)
 			{
-				myData[i] = myData[i - SizeType(1)];
+				new (myData + i) T(myData[i - SizeType(1)]);
 			}
 		}
 		else
@@ -191,7 +191,7 @@ namespace CommonUtilities
 			const SizeType memSize = sizeof(T) * (static_cast<size_t>(mySize) - aIndex);
 			std::memcpy(myData + aIndex + SizeType(1), myData + aIndex, memSize);
 		}
-		myData[aIndex] = aValue;
+		new (myData + aIndex) T(aValue);
 		++mySize;
 	}
 
