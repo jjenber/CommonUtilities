@@ -168,15 +168,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AABB3DTests.cpp" />
-    <ClCompile Include="DoublyLinkedListTests.cpp" />
     <ClCompile Include="GrowingArrayTests.cpp" />
-    <ClCompile Include="IntersectionTests.cpp" />
-    <ClCompile Include="LineTests.cpp" />
-    <ClCompile Include="LineVolumeTests.cpp" />
-    <ClCompile Include="Matrix3x3Tests.cpp" />
-    <ClCompile Include="Matrix4x4Tests.cpp" />
-    <ClCompile Include="MatrixTests.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

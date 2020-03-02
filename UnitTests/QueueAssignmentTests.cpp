@@ -30,6 +30,50 @@ namespace QueueTests
 			_CrtMemCheckpoint(&memEnd);
 			Assert::IsFalse(_CrtMemDifference(&memDiff, &memStart, &memEnd), L"There is a memory leak!");
 		}
+		TEST_METHOD(EnqueueFromDequeue)
+		{
+			_CrtMemState memStart;
+			_CrtMemState memEnd;
+			_CrtMemState memDiff;
+			_CrtMemCheckpoint(&memStart);
+			{
+				Queue<std::string> queue;
+				Assert::IsTrue(queue.IsEmpty());
+
+				queue.Enqueue("Hello");
+				Assert::AreEqual("Hello", queue.GetFront().c_str());
+				queue.Enqueue("Hello1");
+				queue.Enqueue("Hello2");
+
+				auto value = queue.Dequeue(); // Hello
+				Assert::AreEqual("Hello1", queue.GetFront().c_str());
+				value = queue.Dequeue(); // Hello1
+
+				queue.Enqueue("Hello3");
+				Assert::AreEqual("Hello2", queue.GetFront().c_str());
+
+				while (!queue.IsEmpty())
+				{
+					auto v = queue.Dequeue();
+				}
+
+				Assert::IsTrue(queue.IsEmpty());
+
+				queue.Enqueue("Hello");
+				Assert::AreEqual("Hello", queue.GetFront().c_str());
+				queue.Enqueue("Hello1");
+				queue.Enqueue("Hello2");
+
+				value = queue.Dequeue(); // Hello
+				Assert::AreEqual("Hello1", queue.GetFront().c_str());
+				value = queue.Dequeue(); // Hello1
+
+				queue.Enqueue("Hello3");
+				Assert::AreEqual("Hello2", queue.GetFront().c_str());
+			}
+			_CrtMemCheckpoint(&memEnd);
+			Assert::IsFalse(_CrtMemDifference(&memDiff, &memStart, &memEnd), L"There is a memory leak!");
+		}
 
 		TEST_METHOD(Dequeue)
 		{
@@ -78,5 +122,34 @@ namespace QueueTests
 			Assert::IsFalse(_CrtMemDifference(&memDiff, &memStart, &memEnd), L"There is a memory leak!");
 		}
 
+		TEST_METHOD(TestGrowing)
+		{
+			_CrtMemState memStart;
+			_CrtMemState memEnd;
+			_CrtMemState memDiff;
+			_CrtMemCheckpoint(&memStart);
+			{
+				Queue<std::string> queue;
+				Assert::IsTrue(queue.IsEmpty());
+
+				queue.Enqueue("Hello");
+				queue.Enqueue("Hello1");
+				queue.Enqueue("Hello2");
+				queue.Enqueue("Hello3");
+
+				queue.Dequeue();
+				queue.Dequeue();
+				Assert::AreEqual("Hello2", queue.GetFront().c_str());
+				int i = 0;
+				while (i < 10)
+				{
+					i++;
+					queue.Enqueue(std::to_string(i));
+				}
+				Assert::AreEqual("Hello2", queue.GetFront().c_str());
+			}
+			_CrtMemCheckpoint(&memEnd);
+			Assert::IsFalse(_CrtMemDifference(&memDiff, &memStart, &memEnd), L"There is a memory leak!");
+		}
 	};
 }

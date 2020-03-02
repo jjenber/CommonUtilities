@@ -17,6 +17,8 @@ namespace CommonUtilities
 		T Dequeue();
 
 	private:
+		void Grow();
+
 		GrowingArray<T, int> myData;
 		int myFront;
 		int myBack;
@@ -57,30 +59,22 @@ namespace CommonUtilities
 	template<class T>
 	inline void Queue<T>::Enqueue(const T& aValue)
 	{
-		/*myBack = (myBack + 1) % myData.myReserved;
-		if (myBack > myFront)
+		if (mySize == myData.mySize)
 		{
-			(myData.myData + myBack);
+			if (myFront != 0)
+			{
+				Grow();
+			}
+			else
+				myBack++;
+			myData.Add(T());
+			myData[myBack] = aValue;
+			mySize++;
+			
+			return;
 		}
-		if (myBack == myFront)
-		{*/
-			//auto oldData = myData;
-			//myData = GrowingArray<T, int>(oldData.myReserved * 2);
-			//for (int i = myFront; /**/; i = (i + 1) % mySize)
-			//{
-			//	myData.Add(oldData[i]);
-			//	if (i == myBack)
-			//	{
-			//		myFront = 0;
-			//		myBack = mySize;
-			//		return;
-			//	}
-			//}
-
-		//}
-		
-
-		myData.myData[] = aValue;
+		myBack = myBack == myData.mySize - 1 ? 0 : myBack + 1;
+		myData[myBack] = aValue;
 		++mySize;
 	}
 	template<class T>
@@ -89,8 +83,26 @@ namespace CommonUtilities
 		assert(mySize > 0 && "Queue is empty.");
 		T value = myData[myFront];
 		(myData.myData + myFront)->~T();
-		myFront = (myFront + 1) % myData.myReserved;
+		myFront = (myFront + 1) % myData.mySize;
+		--mySize;
 		return value;
+	}
+
+	template<class T>
+	inline void Queue<T>::Grow()
+	{
+		auto oldData = myData;
+		myData = GrowingArray<T, int>(myData.myReserved * 2);
+		for (int i = myFront; ; i = (i + 1) % mySize)
+		{
+			myData.Add(oldData[i]);
+			if (i == myBack)
+			{
+				myFront = 0;
+				myBack = mySize;
+				break;
+			}
+		}
 	}
 }
 
