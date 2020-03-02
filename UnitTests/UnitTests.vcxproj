@@ -187,6 +187,7 @@
     <ClCompile Include="PlaneVolumeTests.cpp" />
     <ClCompile Include="Shared\Utility.cpp" />
     <ClCompile Include="SphereTests.cpp" />
+    <ClCompile Include="StackTests.cpp" />
     <ClCompile Include="VectorTests.cpp" />
   </ItemGroup>
   <ItemGroup>

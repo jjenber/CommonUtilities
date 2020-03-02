@@ -6,6 +6,8 @@ namespace CommonUtilities
 	template<typename T, typename SizeType = unsigned short>
 	class GrowingArray
 	{
+		template<class U> friend class Queue;
+		template<class U> friend class Stack;
 	public:
 		GrowingArray();
 		GrowingArray(SizeType aReservedSize, bool aUseSafeModeFlag = true);
