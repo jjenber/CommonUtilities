@@ -10,31 +10,51 @@ namespace CommonUtilities
 	class Vector2
 	{
 	public:
-		T x;
-		T y;
+		union
+		{
+			T x;
+			T myX;
+		};
+		union
+		{
+			T y;
+			T myY;
+		};
 
 		Vector2<T>();
+		~Vector2<T>() = default;
 		Vector2<T>(const T& aX, const T& aY);
 		Vector2<T>(const Vector2<T>& aVector) = default;
+		
 		Vector2<T>& operator=(const Vector2<T>& aVector2) = default;
-
-		~Vector2<T>() = default;
+		
+		template <class OtherType>
+		Vector2<T>& operator=(const Vector2<OtherType>& aVector) { x = (T)aVector.x; y = (T)aVector.y; return *this; }
 
 		T LengthSqr() const;
 		T Length() const;
 
 		Vector2<T> GetNormalized() const;
-		void Normalize();
+		Vector2<T>& Normalize();
+		Vector2<T> Vector2<T>::Normal();
 
 		T Dot(const Vector2<T>& aVector) const;
+		
+		void Set(const T& aX, const T& aY);
 	private:
 	};
 
+	typedef Vector2<float> Vector2f;
+	typedef Vector2<unsigned int>  Vector2ui;
+
 	template <class T> Vector2<T> operator+(const Vector2<T>& aVector0, const Vector2<T>& aVector1);
 	template <class T> Vector2<T> operator-(const Vector2<T>& aVector0, const Vector2<T>& aVector1);
+	template <class T> Vector2<T> operator*(const Vector2<T>& aVector0, const Vector2<T>& aVector1);
 	template <class T> Vector2<T> operator*(const Vector2<T>& aVector, const T& aScalar);
 	template <class T> Vector2<T> operator*(const T& aScalar, const Vector2<T>& aVector);
 	template <class T> Vector2<T> operator/(const Vector2<T>& aVector, const T& aScalar);
+	template <class T> Vector2<T> operator/(const Vector2<T>& aVector0, const Vector2<T>& aVector1);
+
 	template <class T> void operator+=(Vector2<T>& aVector0, const Vector2<T>& aVector1);
 	template <class T> void operator-=(Vector2<T>& aVector0, const Vector2<T>& aVector1);
 	template <class T> void operator*=(Vector2<T>& aVector, const T& aScalar);
@@ -76,7 +96,7 @@ namespace CommonUtilities
 	}
 
 	template<class T>
-	inline void Vector2<T>::Normalize()
+	inline Vector2<T>& Vector2<T>::Normalize()
 	{
 		const T magnitude = (x * x) + (y * y);
 
@@ -87,12 +107,26 @@ namespace CommonUtilities
 		const T inversedMagnitude = T(1) / sqrt(magnitude);
 		x *= inversedMagnitude; 
 		y *= inversedMagnitude;
+		return *this;
+	}
+
+	// Returns a copy of the non-normalized normal.
+	template<class T> inline Vector2<T> Vector2<T>::Normal()
+	{
+		return Vector2<T>(y, -x);
 	}
 
 	template<class T>
 	inline T Vector2<T>::Dot(const Vector2<T>& aVector) const
 	{
 		return (x * aVector.x) + (y * aVector.y);
+	}
+
+	template<class T>
+	inline void Vector2<T>::Set(const T& aX, const T& aY)
+	{
+		x = aX;
+		y = aY;
 	}
 
 #pragma endregion MemberDefinitions
@@ -108,6 +142,12 @@ namespace CommonUtilities
 	Vector2<T> operator-(const Vector2<T>& aVector0, const Vector2<T>& aVector1)
 	{
 		return Vector2<T>(aVector0.x - aVector1.x, aVector0.y - aVector1.y);
+	}
+
+	template<class T>
+	Vector2<T> operator*(const Vector2<T>& aVector0, const Vector2<T>& aVector1)
+	{
+		return Vector2<T>(aVector0.x * aVector1.x, aVector0.y * aVector1.y);
 	}
 
 	template <class T>
@@ -126,6 +166,12 @@ namespace CommonUtilities
 	Vector2<T> operator/(const Vector2<T>& aVector, const T& aScalar)
 	{
 		return aVector * (1 / aScalar);
+	}
+
+	template<class T>
+	Vector2<T> operator/(const Vector2<T>& aVector0, const Vector2<T>& aVector1)
+	{
+		return Vector2<T>{ aVector0.x / aVector1.x, aVector0.y / aVector1.y };
 	}
 
 	template <class T>
