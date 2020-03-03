@@ -36,7 +36,7 @@ namespace CommonUtilities
 
 		Vector2<T> GetNormalized() const;
 		Vector2<T>& Normalize();
-		Vector2<T> Vector2<T>::Normal();
+		Vector2<T> Normal();
 
 		T Dot(const Vector2<T>& aVector) const;
 		
