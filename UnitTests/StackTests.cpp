@@ -1,40 +1,134 @@
 #include "pch.h"
 #include "CppUnitTest.h"
-#include "..//CommonUtilities/Stack.h"
-#include <string>
-#include <memory>
+
+//#include "Student Code\Stack.hpp"
+#include "../CommonUtilities/Stack.h"
+#include "Shared\UtilityFunctions.hpp"
+
+#include <vector>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
-using namespace CommonUtilities;
 
-namespace StackTest
-{
-	TEST_CLASS(Constructors)
+using Stackf = CommonUtilities::Stack<float>;
+
+namespace Assignment2StackandQueue
+{		
+	TEST_CLASS(StackTests)
 	{
 	public:
-		TEST_METHOD(Push)
+		
+		TEST_METHOD(S_Constructor)
 		{
-			Stack<int> stackI;
-			Stack<std::string> stackS;
+			Stackf stack;
 
-			stackI.Push(0);
-			stackI.Push(1);
-			stackI.Push(2);
+			Assert::AreEqual(0, stack.GetSize(), L"The size of an empty stack should be zero.");
+		}
 
-			Assert::AreEqual(2, stackI.Pop());
-			Assert::AreNotEqual(0, stackI.Pop());
-			Assert::AreEqual(0, stackI.Pop());
-			Assert::AreEqual(0, stackI.GetSize());
+		TEST_METHOD(S_Push_GetSize)
+		{
+			Stackf stack;
 
-			stackS.Push("0");
-			stackS.Push("1");
-			stackS.Push("2");
+			for (int i = 0; i < 60; ++i)
+			{
+				Assert::AreEqual(i, stack.GetSize(), L"GetSize() does not return the correct stack size.");
+				stack.Push(static_cast<float>(i));
+			}
 
-			Assert::AreEqual(3, stackS.GetSize());
-			Assert::AreEqual("2", stackS.Pop().c_str());
-			Assert::AreEqual("1", stackS.Pop().c_str());
-			Assert::AreEqual("0", stackS.Pop().c_str());
+			for (int i = 0; i < 600; ++i)
+			{
+				stack.Push(static_cast<float>(i));
+			}
 
+			Assert::AreEqual(660, stack.GetSize(), L"GetSize() does not return the correct stack size.");
+		}
+
+		TEST_METHOD(S_GetTop)
+		{
+			Stackf stack;
+
+			for (int i = 0; i < 60; ++i)
+			{
+				float rng = TestUtility::GetRandomFloat();
+				stack.Push(rng);
+				Assert::AreEqual(rng, stack.GetTop(), L"GetTop() does not return the correct value.");
+			}
+		}
+
+		TEST_METHOD(S_GetTop_Const)
+		{
+			Stackf stack;
+			const Stackf& constStack = stack;
+
+			for (int i = 0; i < 60; ++i)
+			{
+				float rng = TestUtility::GetRandomFloat();
+				stack.Push(rng);
+				Assert::AreEqual(rng, constStack.GetTop(), L"GetTop() does not return the correct value.");
+			}
+		}
+
+		TEST_METHOD(S_Pop)
+		{
+			Stackf stack;
+			std::vector<float> control;
+
+			for (int i = 0; i < 60; ++i)
+			{
+				stack.Push(static_cast<float>(i));
+			}
+
+			for (int i = 0; i < 60; ++i)
+			{
+				float rng = TestUtility::GetRandomFloat();
+				stack.Push(rng);
+				control.push_back(rng);
+			}
+
+			for (int i = 59; i >= 0; --i)
+			{
+				Assert::AreEqual(control.at(i), stack.Pop(), L"Pop() does not return the expected value.");
+			}
+
+			for (int i = 59; i >= 0; --i)
+			{
+				Assert::AreEqual(static_cast<float>(i), stack.Pop(), L"Pop() does not return the expected value.");
+			}
+		}
+
+		TEST_METHOD(S_SHOULDCRASH_Pop_Empty)
+		{
+			Stackf stack;
+
+			stack.Pop();
+		}
+
+		TEST_METHOD(S_SHOULDCRASH_Pop)
+		{
+			Stackf stack;
+
+			for (int i = 0; i < 60; ++i)
+			{
+				stack.Push(static_cast<float>(i));
+			}
+
+			for (int i = 0; i < 61; ++i)
+			{
+				stack.Pop();
+			}
+		}
+
+		TEST_METHOD(S_SHOULDCRASH_GetTop)
+		{
+			const Stackf stack;
+
+			stack.GetTop();
+		}
+
+		TEST_METHOD(S_SHOULDCRASH_GetTop_Const)
+		{
+			const Stackf stack;
+
+			stack.GetTop();
 		}
 	};
 }
