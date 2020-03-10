@@ -10,7 +10,7 @@ namespace CommonUtilities
 		Queue();
 		Queue(const int aReserved);
 		int GetSize() const;
-		bool IsEmpty();
+		bool IsEmpty() const;
 		const T& GetFront() const;
 		T& GetFront();
 		void Enqueue(const T& aValue);
@@ -31,6 +31,7 @@ namespace CommonUtilities
 	template<class T>
 	inline Queue<T>::Queue(const int aReserved) : myFront(0), myBack(0), mySize(0)
 	{
+		assert(aReserved > 0 && "Reserved amount must be more than 0.");
 		myData.Init(aReserved);
 	}
 
@@ -41,13 +42,14 @@ namespace CommonUtilities
 	}
 
 	template<class T>
-	inline bool Queue<T>::IsEmpty()
+	inline bool Queue<T>::IsEmpty() const
 	{
 		return mySize == 0;
 	}
 	template<class T>
 	inline const T& Queue<T>::GetFront() const
 	{
+		assert(!IsEmpty() && "Queue is empty.");
 		return myData[myFront];
 	}
 	template<class T>

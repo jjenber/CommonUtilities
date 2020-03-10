@@ -57,8 +57,8 @@ namespace Assignment2StackandQueue
 		TEST_METHOD(Q_GetFront_Const)
 		{
 			Queuef queue;
-			//const Queuef& constQueue = queue;
-
+			const Queuef& constQueue = queue;
+			constQueue;
 			float rng = TestUtility::GetRandomFloat();
 			queue.Enqueue(rng);
 
