@@ -48,7 +48,7 @@ namespace CommonUtilities
 	template<class T>
 	inline const T& Queue<T>::GetFront() const
 	{
-		return GetFront();
+		return myData[myFront];
 	}
 	template<class T>
 	inline T& Queue<T>::GetFront()
