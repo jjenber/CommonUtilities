@@ -27,7 +27,7 @@ namespace CommonUtilities
 		inline void Insert(const SizeType aIndex, const T& aValue);
 
 		// Returns FoundNone if the value is not in the array.
-		inline SizeType Find(const T& aValue);
+		inline int Find(const T& aValue);
 
 		inline void RemoveCyclic(const T& aValue);
 		inline void RemoveCyclicAtIndex(const SizeType aIndex);
@@ -40,7 +40,7 @@ namespace CommonUtilities
 		__forceinline SizeType Size() const;
 		__forceinline SizeType Capacity() const;
 	
-		static const SizeType FoundNone = -1;
+		static const int FoundNone = -1;
 	private:
 
 		void Swap(GrowingArray& aGrowingArray) noexcept;
@@ -196,13 +196,13 @@ namespace CommonUtilities
 	}
 
 	template<typename T, typename SizeType>
-	SizeType GrowingArray<T, SizeType>::Find(const T& aValue)
+	int GrowingArray<T, SizeType>::Find(const T& aValue)
 	{
 		for (SizeType i = 0; i < mySize; i++)
 		{
 			if (myData[i] == aValue)
 			{
-				return i;
+				return static_cast<int>(i);
 			}
 		}
 		return FoundNone;
