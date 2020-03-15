@@ -181,7 +181,7 @@ namespace CommonUtilities
 		}
 		if (myUseSafeMode)
 		{
-			for (SizeType i = mySize; i > aIndex; i--)
+			for (int i = static_cast<int>(mySize); i > aIndex; i--)
 			{
 				new (myData + i) T(myData[i - SizeType(1)]);
 			}
