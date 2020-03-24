@@ -11,9 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\UnitTests\BSTNode.h" />
     <ClInclude Include="AABB3D.h" />
     <ClInclude Include="BSTSet.hpp" />
+    <ClInclude Include="BSTSetNode.h" />
     <ClInclude Include="DL_assert.h" />
     <ClInclude Include="DL_Debug.h" />
     <ClInclude Include="DL_StackWalker.h" />

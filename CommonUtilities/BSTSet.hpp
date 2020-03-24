@@ -1,5 +1,5 @@
 #pragma once
-#include "BSTNode.h"
+#include "BSTSetNode.h"
 #include <cassert>
 namespace CommonUtilities
 {
@@ -8,19 +8,32 @@ namespace CommonUtilities
 	{
 	public:
 		~BSTSet();
-		bool HasElement(const T& aValue) const;
-		void Insert(const T& aValue);
-		void Remove(const T& aValue);
-		void Clear();
-		bool IsEmpty() const;
-		
+		size_t				 GetSize() const;
+		bool				 HasElement(const T& aValue) const;
+		bool				 IsEmpty() const;
+		void				 Insert(const T& aValue);
+		void				 Remove(const T& aValue);
+		void				 Clear();
+		void				 DSWBalance();
+		const BSTSetNode<T>* GetRoot() const;
+
 	private:
-		bool FindValue(BSTNode<T>* aNode, const T& aValue) const;
+		bool				 FindValue(BSTSetNode<T>* aNode, const T& aValue) const;
+		void				 CreateBackbone(BSTSetNode<T>* aRoot);
+		void				 CreatePerfectTree();
+		void				 RotateRight(BSTSetNode<T>* aGrandParent, BSTSetNode<T>* aParent, BSTSetNode<T>* aChild);
+		void				 RotateLeft(BSTSetNode<T>* aGrandParent, BSTSetNode<T>* aParent, BSTSetNode<T>* aChild);
+		void				 Compress(BSTSetNode<T>* aNode, int aCount);
+		BSTSetNode<T>*		 FindNode(const T& aValue);
+		BSTSetNode<T>*		 RemoveRecursive(BSTSetNode<T>* aNode, const T& aValue);
+
 		
-		BSTNode<T>* FindNode(const T& aValue);
-		BSTNode<T>* RemoveRecursive(BSTNode<T>* aNode, const T& aValue);
-		BSTNode<T>* myRoot = nullptr;
+		BSTSetNode<T>*		 myRoot = nullptr;
+		size_t				 mySize = 0;
 	};
+
+	template <class T> using Node = BSTSetNode<T>;
+
 	template <class T>
 	BSTSet<T>::~BSTSet()
 	{
@@ -32,12 +45,18 @@ namespace CommonUtilities
 		assert(myRoot != nullptr && "Tree is empty.");
 		return FindValue(myRoot, aValue);
 	}
+	
+	template<class T>
+	size_t BSTSet<T>::GetSize() const
+	{
+		return mySize;
+	}
 
 	template<class T>
 	inline void BSTSet<T>::Insert(const T& aValue)
 	{
-		BSTNode<T>* itr = myRoot;
-		BSTNode<T>* previous = nullptr;
+		Node<T>* itr = myRoot;
+		Node<T>* previous = nullptr;
 
 		while (itr != nullptr)
 		{
@@ -57,22 +76,23 @@ namespace CommonUtilities
 		}
 		if (myRoot == nullptr)
 		{
-			myRoot = new BSTNode<T>(aValue);
+			myRoot = new Node<T>(aValue);
 		}
 		else if (aValue < previous->myElement)
 		{
-			previous->myLeftChild = new BSTNode<T>(aValue);
+			previous->myLeftChild = new Node<T>(aValue);
 		}
 		else
 		{
-			previous->myRightChild = new BSTNode<T>(aValue);
+			previous->myRightChild = new Node<T>(aValue);
 		}
+		++mySize;
 	}
 
 	template<class T>
-	BSTNode<T>* BSTSet<T>::FindNode(const T& aValue)
+	Node<T>* BSTSet<T>::FindNode(const T& aValue)
 	{
-		BSTNode<T>* itr = myRoot;
+		Node<T>* itr = myRoot;
 		while (itr != nullptr)
 		{
 			if (aValue < itr->myElement)
@@ -97,7 +117,7 @@ namespace CommonUtilities
 		myRoot = RemoveRecursive(myRoot, aValue);
 	}
 	template<class T>
-	BSTNode<T>* BSTSet<T>::RemoveRecursive(BSTNode<T>* aNode, const T& aValue)
+	Node<T>* BSTSet<T>::RemoveRecursive(BSTSetNode<T>* aNode, const T& aValue)
 	{
 		if (aNode == nullptr)
 			return nullptr;
@@ -116,26 +136,29 @@ namespace CommonUtilities
 			{
 				delete aNode;
 				aNode = nullptr;
+				--mySize;
 			}
 			else if (aNode->myLeftChild == nullptr)
 			{
-				BSTNode<T>* temp = aNode;
+				Node<T>* temp = aNode;
 				aNode = aNode->myRightChild;
 				temp->myLeftChild = nullptr;
 				temp->myRightChild = nullptr;
 				delete temp;
+				--mySize;
 			}
 			else if (aNode->myRightChild == nullptr)
 			{
-				BSTNode<T>* temp = aNode;
+				Node<T>* temp = aNode;
 				aNode = aNode->myLeftChild;
 				temp->myLeftChild = nullptr;
 				temp->myRightChild = nullptr;
 				delete temp;
+				--mySize;
 			}
 			else
 			{
-				BSTNode<T>* temp = aNode->myRightChild;
+				Node<T>* temp = aNode->myRightChild;
 				while (temp->myLeftChild != nullptr)
 				{
 					temp = temp->myLeftChild;
@@ -155,6 +178,7 @@ namespace CommonUtilities
 			delete myRoot;
 			myRoot = nullptr;
 		}
+		mySize = 0;
 	}
 
 	template<class T>
@@ -163,9 +187,22 @@ namespace CommonUtilities
 		return myRoot == nullptr;
 	}
 
+	template<class T>
+	inline void BSTSet<T>::DSWBalance()
+	{
+		CreateBackbone(myRoot);
+		CreatePerfectTree();
+	}
+
+	template<class T>
+	inline const Node<T>* BSTSet<T>::GetRoot() const
+	{
+		return myRoot;
+	}
+
 #pragma region Private
 	template<class T>
-	inline bool BSTSet<T>::FindValue(BSTNode<T>* aNode, const T& aValue) const
+	inline bool BSTSet<T>::FindValue(BSTSetNode<T>* aNode, const T& aValue) const
 	{
 		while (aNode != nullptr)
 		{
@@ -187,5 +224,95 @@ namespace CommonUtilities
 		return false;
 	}
 
+	template<class T>
+	inline void BSTSet<T>::CreateBackbone(BSTSetNode<T>* aRoot)
+	{
+		Node<T>* temp       = aRoot;
+		Node<T>* tempParent = nullptr;
+		while (temp != nullptr)
+		{
+			if (temp->myLeftChild != nullptr)
+			{
+				RotateRight(tempParent, temp, temp->myLeftChild);
+#pragma warning (push)
+#pragma warning (disable: 6011) // Dereferencing NULL  
+				temp = tempParent->myRightChild;
+#pragma warning (pop)
+			}
+			else
+			{
+				tempParent = temp;
+				temp = temp->myRightChild;
+			}
+		}
+	}
+	template <class T>
+	inline void BSTSet<T>::RotateRight(BSTSetNode<T>* aGrandParent, BSTSetNode<T>* aParent, BSTSetNode<T>* aChild)
+	{
+		if (aGrandParent != nullptr)
+		{
+			aGrandParent->myRightChild = aChild;
+		}
+		else
+		{
+			myRoot = aChild;
+		}
+		aParent->myLeftChild = aChild->myRightChild;
+		aChild->myRightChild = aParent;
+	}
+
+	template <class T>
+	inline void BSTSet<T>::RotateLeft(BSTSetNode<T>* aGrandParent, BSTSetNode<T>* aParent, BSTSetNode<T>* aChild)
+	{
+		if (aGrandParent != nullptr)
+		{
+			aGrandParent->myRightChild = aChild;
+		}
+		else
+		{
+			myRoot = aChild;
+		}
+		aParent->myRightChild = aChild->myLeftChild;
+		aChild->myLeftChild = aParent;
+	}
+
+	template<class T>
+	inline void BSTSet<T>::Compress(BSTSetNode<T>* aNode, int aCount)
+	{
+		Node<T>* tempParent = nullptr;
+		Node<T>* temp = aNode;
+
+		for (int i = 0; i < aCount; i++)
+		{
+			if (temp->myRightChild != nullptr)
+			{
+				Node<T>* child = temp->myRightChild;
+				RotateLeft(tempParent, temp, temp->myRightChild);
+				tempParent = child;
+				temp = tempParent->myRightChild;
+			}
+			else
+			{
+				break;
+			}
+		}
+
+	}
+
+
+	template <class T>
+	inline void BSTSet<T>::CreatePerfectTree()
+	{
+		int size = static_cast<int>(mySize);
+		int exp  = static_cast<int>(floor(log2(size + 1)));
+		int m    = static_cast<int>(pow(2, exp) - 1);
+		
+		Compress(myRoot, size - m);
+
+		while (m > 1)
+		{
+			Compress(myRoot, m /= 2);
+		}
+	}
 #pragma endregion
 }

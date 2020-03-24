@@ -108,7 +108,7 @@
     <ClInclude Include="BSTSet.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\UnitTests\BSTNode.h">
+    <ClInclude Include="BSTSetNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
