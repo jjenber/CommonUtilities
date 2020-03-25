@@ -20,6 +20,7 @@
     <ClInclude Include="DoublyLinkedList.h" />
     <ClInclude Include="DoublyLinkedListNode.h" />
     <ClInclude Include="GrowingArray.h" />
+    <ClInclude Include="Heap.hpp" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="Intersection.h" />
     <ClInclude Include="JsonUtility.h" />

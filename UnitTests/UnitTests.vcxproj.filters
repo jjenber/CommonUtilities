@@ -24,7 +24,7 @@
     <ClCompile Include="GrowingArrayTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BinarySearchTreeTests.cpp">
+    <ClCompile Include="HeapTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
