@@ -231,13 +231,12 @@ namespace CommonUtilities
 		Node<T>* tempParent = nullptr;
 		while (temp != nullptr)
 		{
-			if (temp->myLeftChild != nullptr)
+			Node<T>* child = temp->myLeftChild;
+			if (child != nullptr)
 			{
-				RotateRight(tempParent, temp, temp->myLeftChild);
-#pragma warning (push)
-#pragma warning (disable: 6011) // Dereferencing NULL  
-				temp = tempParent->myRightChild;
-#pragma warning (pop)
+				
+				RotateRight(tempParent, temp, child);
+				temp = child;
 			}
 			else
 			{
