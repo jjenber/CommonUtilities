@@ -21,10 +21,10 @@
     <ClCompile Include="Shared\Utility.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GrowingArrayTests.cpp">
+    <ClCompile Include="HeapTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="HeapTests.cpp">
+    <ClCompile Include="SortTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

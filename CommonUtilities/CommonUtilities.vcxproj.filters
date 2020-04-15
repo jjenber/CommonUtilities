@@ -114,6 +114,9 @@
     <ClInclude Include="Heap.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Sort.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DL_Debug.cpp">

@@ -35,6 +35,7 @@
     <ClInclude Include="Queue.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="Ray.h" />
+    <ClInclude Include="Sort.hpp" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Stack.h" />
     <ClInclude Include="StaticArray.h" />
