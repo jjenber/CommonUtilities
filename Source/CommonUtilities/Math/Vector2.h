@@ -36,12 +36,11 @@ namespace CommonUtilities
 
 		Vector2<T> GetNormalized() const;
 		Vector2<T>& Normalize();
-		Vector2<T> Normal();
+		Vector2<T> Normal() const;
 
 		T Dot(const Vector2<T>& aVector) const;
 		
 		void Set(const T& aX, const T& aY);
-	private:
 	};
 
 	typedef Vector2<float> Vector2f;
@@ -54,6 +53,7 @@ namespace CommonUtilities
 	template <class T> Vector2<T> operator*(const T& aScalar, const Vector2<T>& aVector);
 	template <class T> Vector2<T> operator/(const Vector2<T>& aVector, const T& aScalar);
 	template <class T> Vector2<T> operator/(const Vector2<T>& aVector0, const Vector2<T>& aVector1);
+	template <class T> bool operator==(const Vector2<T>& aVector0, const Vector2<T>& aVector1);
 
 	template <class T> void operator+=(Vector2<T>& aVector0, const Vector2<T>& aVector1);
 	template <class T> void operator-=(Vector2<T>& aVector0, const Vector2<T>& aVector1);
@@ -111,7 +111,7 @@ namespace CommonUtilities
 	}
 
 	// Returns a copy of the non-normalized normal.
-	template<class T> inline Vector2<T> Vector2<T>::Normal()
+	template<class T> inline Vector2<T> Vector2<T>::Normal() const
 	{
 		return Vector2<T>(y, -x);
 	}
@@ -172,6 +172,12 @@ namespace CommonUtilities
 	Vector2<T> operator/(const Vector2<T>& aVector0, const Vector2<T>& aVector1)
 	{
 		return Vector2<T>{ aVector0.x / aVector1.x, aVector0.y / aVector1.y };
+	}
+
+	template<class T>
+	bool operator==(const Vector2<T>& aVector0, const Vector2<T>& aVector1)
+	{
+		return aVector0.x == aVector1.x && aVector0.y == aVector1.y;
 	}
 
 	template <class T>
