@@ -106,6 +106,7 @@
     <ClCompile Include="IntersectionTests.cpp" />
     <ClCompile Include="LineTests.cpp" />
     <ClCompile Include="LineVolumeTests.cpp" />
+    <ClCompile Include="MathTests.cpp" />
     <ClCompile Include="Matrix3x3Tests.cpp" />
     <ClCompile Include="Matrix4x4Tests.cpp" />
     <ClCompile Include="MatrixTests.cpp" />

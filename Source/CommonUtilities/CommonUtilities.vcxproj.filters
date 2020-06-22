@@ -179,5 +179,8 @@
     <ClInclude Include="Collections\MinHeap.hpp">
       <Filter>Collections</Filter>
     </ClInclude>
+    <ClInclude Include="Math\Math.hpp">
+      <Filter>Math</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
