@@ -1,0 +1,5 @@
+﻿D:\Visual Studio Projects\CommonUtilities\Source\UnitTests\UnitTests.vcxproj(44,5): error MSB4019: The imported project "D:\Visual Studio Projects\CommonUtilities\dll.props" was not found. Confirm that the expression in the Import declaration "..\..\dll.props" is correct, and that the file exists on disk.
+
+Project Performance Summary:
+        0 ms  D:\Visual Studio Projects\CommonUtilities\Source\UnitTests\UnitTests.vcxproj   1 calls
+                  0 ms  Clean                                      1 calls
