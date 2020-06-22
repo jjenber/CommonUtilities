@@ -87,9 +87,10 @@ namespace CommonUtilities
 	{
 		const T magnitude = (x * x) + (y * y);
 
-#ifdef _DEBUG
-		assert(magnitude != 0 && "Tried to normalize a null vector ");
-#endif // _DEBUG
+		if (magnitude == 0)
+		{
+			return *this;
+		}
 
 		const T inversedMagnitude = T(1) / sqrt(magnitude);
 		return Vector2<T>(x * inversedMagnitude, y * inversedMagnitude);
@@ -100,9 +101,10 @@ namespace CommonUtilities
 	{
 		const T magnitude = (x * x) + (y * y);
 
-#ifdef _DEBUG
-		assert(magnitude != 0 && "Tried to normalize a null vector ");
-#endif // _DEBUG
+		if (magnitude == 0)
+		{
+			return *this;
+		}
 
 		const T inversedMagnitude = T(1) / sqrt(magnitude);
 		x *= inversedMagnitude; 
