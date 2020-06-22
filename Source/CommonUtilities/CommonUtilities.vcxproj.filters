@@ -48,9 +48,6 @@
     <ClCompile Include="Algorithms\Pathfinding\Pathfinding.cpp">
       <Filter>Algorithms\Pathfinding</Filter>
     </ClCompile>
-    <ClCompile Include="Debugging\StackWalker\StackWalker.cpp">
-      <Filter>Debugging</Filter>
-    </ClCompile>
     <ClCompile Include="Debugging\DL_Debug.cpp">
       <Filter>Debugging</Filter>
     </ClCompile>
@@ -109,9 +106,6 @@
     </ClInclude>
     <ClInclude Include="Collections\VectorOnStack.h">
       <Filter>Collections</Filter>
-    </ClInclude>
-    <ClInclude Include="Debugging\StackWalker\StackWalker.h">
-      <Filter>Debugging</Filter>
     </ClInclude>
     <ClInclude Include="Debugging\DL_assert.h">
       <Filter>Debugging</Filter>
@@ -178,6 +172,12 @@
     </ClInclude>
     <ClInclude Include="Algorithms\Pathfinding\Dijkstra.hpp">
       <Filter>Algorithms\Pathfinding</Filter>
+    </ClInclude>
+    <ClInclude Include="Algorithms\Sort.hpp">
+      <Filter>Algorithms</Filter>
+    </ClInclude>
+    <ClInclude Include="Collections\MinHeap.hpp">
+      <Filter>Collections</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

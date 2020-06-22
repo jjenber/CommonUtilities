@@ -16,7 +16,6 @@
     <ClCompile Include="Algorithms\Pathfinding\Pathfinding.cpp" />
     <ClCompile Include="Debugging\DL_Debug.cpp" />
     <ClCompile Include="Debugging\DL_StackWalker.cpp" />
-    <ClCompile Include="Debugging\StackWalker\StackWalker.cpp" />
     <ClCompile Include="Input\InputHandler.cpp" />
     <ClCompile Include="JsonUtility\JsonUtility.cpp" />
     <ClCompile Include="Random\Random.cpp" />
@@ -26,12 +25,14 @@
     <ClInclude Include="Algorithms\Pathfinding\AStar.h" />
     <ClInclude Include="Algorithms\Pathfinding\Dijkstra.hpp" />
     <ClInclude Include="Algorithms\Pathfinding\Pathfinding.h" />
+    <ClInclude Include="Algorithms\Sort.hpp" />
     <ClInclude Include="Collections\BinarySearchTree\BSTSet.hpp" />
     <ClInclude Include="Collections\BinarySearchTree\BSTSetNode.h" />
     <ClInclude Include="Collections\DoublyLinkedList\DoublyLinkedList.h" />
     <ClInclude Include="Collections\DoublyLinkedList\DoublyLinkedListNode.h" />
     <ClInclude Include="Collections\GrowingArray.h" />
     <ClInclude Include="Collections\Heap.hpp" />
+    <ClInclude Include="Collections\MinHeap.hpp" />
     <ClInclude Include="Collections\Queue.h" />
     <ClInclude Include="Collections\Stack.h" />
     <ClInclude Include="Collections\StaticArray.h" />
@@ -39,7 +40,6 @@
     <ClInclude Include="Debugging\DL_assert.h" />
     <ClInclude Include="Debugging\DL_Debug.h" />
     <ClInclude Include="Debugging\DL_StackWalker.h" />
-    <ClInclude Include="Debugging\StackWalker\StackWalker.h" />
     <ClInclude Include="Geometry\AABB3D.h" />
     <ClInclude Include="Geometry\Line.h" />
     <ClInclude Include="Geometry\LineVolume.h" />
