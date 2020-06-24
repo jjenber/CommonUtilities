@@ -18,6 +18,7 @@ Temp/
 *.ilk
 *.exp
 *.idb
+*.log
 
 # Precompiled Headers
 *.gch
