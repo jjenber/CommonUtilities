@@ -104,6 +104,7 @@
     <ClCompile Include="GrowingArrayTests.cpp" />
     <ClCompile Include="HeapTests.cpp" />
     <ClCompile Include="IntersectionTests.cpp" />
+    <ClCompile Include="JsonUtilityTests.cpp" />
     <ClCompile Include="LineTests.cpp" />
     <ClCompile Include="LineVolumeTests.cpp" />
     <ClCompile Include="MathTests.cpp" />
