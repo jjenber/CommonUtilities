@@ -40,6 +40,9 @@
     <Filter Include="Timer">
       <UniqueIdentifier>{d751e9c2-1e11-4fbc-b039-776c9f2dc6ad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="StringUtility">
+      <UniqueIdentifier>{c50d7b30-c003-4ccc-9b3b-b42882ae0575}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Algorithms\Pathfinding\AStar.cpp">
@@ -68,6 +71,12 @@
     </ClCompile>
     <ClCompile Include="Algorithms\Pathfinding\Dijkstra.cpp">
       <Filter>Algorithms\Pathfinding</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Math.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="StringUtility\StringUtility.cpp">
+      <Filter>StringUtility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -181,6 +190,12 @@
     </ClInclude>
     <ClInclude Include="Math\Math.hpp">
       <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Random\PerlinNoise.hpp">
+      <Filter>Random</Filter>
+    </ClInclude>
+    <ClInclude Include="StringUtility\StringUtility.h">
+      <Filter>StringUtility</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

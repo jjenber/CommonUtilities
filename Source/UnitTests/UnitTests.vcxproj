@@ -118,6 +118,7 @@
     <ClCompile Include="PlaneVolumeTests.cpp" />
     <ClCompile Include="QueueAssignmentTests.cpp" />
     <ClCompile Include="QueueTests.cpp" />
+    <ClCompile Include="RandomTests.cpp" />
     <ClCompile Include="Shared\Utility.cpp" />
     <ClCompile Include="SortTests.cpp" />
     <ClCompile Include="SphereTests.cpp" />

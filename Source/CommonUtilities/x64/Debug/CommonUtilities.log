@@ -1,5 +1,0 @@
-﻿D:\Visual Studio Projects\CommonUtilities\Source\CommonUtilities\CommonUtilities.vcxproj(90,5): error MSB4019: The imported project "D:\Visual Studio Projects\CommonUtilities\lib.props" was not found. Confirm that the expression in the Import declaration "..\..\lib.props" is correct, and that the file exists on disk.
-
-Project Performance Summary:
-        0 ms  D:\Visual Studio Projects\CommonUtilities\Source\CommonUtilities\CommonUtilities.vcxproj   1 calls
-                  0 ms  Clean                                      1 calls

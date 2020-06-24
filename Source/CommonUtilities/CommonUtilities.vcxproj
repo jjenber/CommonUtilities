@@ -18,7 +18,9 @@
     <ClCompile Include="Debugging\DL_StackWalker.cpp" />
     <ClCompile Include="Input\InputHandler.cpp" />
     <ClCompile Include="JsonUtility\JsonUtility.cpp" />
+    <ClCompile Include="Math\Math.cpp" />
     <ClCompile Include="Random\Random.cpp" />
+    <ClCompile Include="StringUtility\StringUtility.cpp" />
     <ClCompile Include="Timer\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -57,7 +59,9 @@
     <ClInclude Include="Math\Vector2.h" />
     <ClInclude Include="Math\Vector3.h" />
     <ClInclude Include="Math\Vector4.h" />
+    <ClInclude Include="Random\PerlinNoise.hpp" />
     <ClInclude Include="Random\Random.h" />
+    <ClInclude Include="StringUtility\StringUtility.h" />
     <ClInclude Include="Timer\Timer.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
