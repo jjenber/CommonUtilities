@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "CppUnitTest.h"
-#include <Collections/GrowingArray.h>
+#include <Containers/GrowingArray.h>
 #include <string>
 #include <memory>
 #include <vector>

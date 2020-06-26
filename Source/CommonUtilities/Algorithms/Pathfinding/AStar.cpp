@@ -1,5 +1,5 @@
 #include "AStar.h"
-#include <Collections/MinHeap.hpp>
+#include <Containers/MinHeap.hpp>
 #include <math.h>
 
 namespace CommonUtilities

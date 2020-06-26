@@ -1,7 +1,8 @@
 #pragma once
 #include <cassert>
 #include <initializer_list>
-#pragma warning (disable: 6385)
+#pragma warning (disable: 6385) // 
+#pragma warning (disable: 6386) // Buffer overrun will fail assertion.
 namespace CommonUtilities
 {
 	template <typename T, int SIZE>

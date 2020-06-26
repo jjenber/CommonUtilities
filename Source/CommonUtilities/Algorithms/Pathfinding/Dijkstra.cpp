@@ -1,5 +1,5 @@
 #include "Dijkstra.hpp"
-#include <Collections/MinHeap.hpp>
+#include <Containers/MinHeap.hpp>
 
 namespace CommonUtilities
 {

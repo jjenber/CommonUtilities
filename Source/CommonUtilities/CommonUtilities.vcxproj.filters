@@ -38,10 +38,10 @@
       <UniqueIdentifier>{89a226f7-9cb7-4c04-9eca-d7dee51cc058}</UniqueIdentifier>
     </Filter>
     <Filter Include="Containers\BinarySearchTree">
-      <UniqueIdentifier>{239ba324-1bc2-449f-b524-d4d2579effbc}</UniqueIdentifier>
+      <UniqueIdentifier>{07e740cc-15c5-484c-9992-a5ef9b7f266a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Containers\DoublyLinkedList">
-      <UniqueIdentifier>{05f0a52c-7e47-41bd-ad1e-dd15710b1d21}</UniqueIdentifier>
+      <UniqueIdentifier>{af6ff1d3-0f85-4c48-8301-2f347ef74c7f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -85,36 +85,6 @@
     </ClInclude>
     <ClInclude Include="Algorithms\Pathfinding\Pathfinding.h">
       <Filter>Algorithms\Pathfinding</Filter>
-    </ClInclude>
-    <ClInclude Include="Collections\BinarySearchTree\BSTSet.hpp">
-      <Filter>Containers\BinarySearchTree</Filter>
-    </ClInclude>
-    <ClInclude Include="Collections\BinarySearchTree\BSTSetNode.h">
-      <Filter>Containers\BinarySearchTree</Filter>
-    </ClInclude>
-    <ClInclude Include="Collections\DoublyLinkedList\DoublyLinkedList.h">
-      <Filter>Containers\DoublyLinkedList</Filter>
-    </ClInclude>
-    <ClInclude Include="Collections\DoublyLinkedList\DoublyLinkedListNode.h">
-      <Filter>Containers\DoublyLinkedList</Filter>
-    </ClInclude>
-    <ClInclude Include="Collections\GrowingArray.h">
-      <Filter>Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="Collections\Heap.hpp">
-      <Filter>Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="Collections\Queue.h">
-      <Filter>Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="Collections\Stack.h">
-      <Filter>Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="Collections\StaticArray.h">
-      <Filter>Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="Collections\VectorOnStack.h">
-      <Filter>Containers</Filter>
     </ClInclude>
     <ClInclude Include="Debugging\DL_assert.h">
       <Filter>Debugging</Filter>
@@ -185,9 +155,6 @@
     <ClInclude Include="Algorithms\Sort.hpp">
       <Filter>Algorithms</Filter>
     </ClInclude>
-    <ClInclude Include="Collections\MinHeap.hpp">
-      <Filter>Containers</Filter>
-    </ClInclude>
     <ClInclude Include="Math\Math.hpp">
       <Filter>Math</Filter>
     </ClInclude>
@@ -196,6 +163,39 @@
     </ClInclude>
     <ClInclude Include="StringUtility\StringUtility.h">
       <Filter>StringUtility</Filter>
+    </ClInclude>
+    <ClInclude Include="Containers\GrowingArray.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Containers\Heap.hpp">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Containers\MinHeap.hpp">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Containers\Queue.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Containers\Stack.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Containers\StaticArray.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Containers\VectorOnStack.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Containers\BinarySearchTree\BSTSet.hpp">
+      <Filter>Containers\BinarySearchTree</Filter>
+    </ClInclude>
+    <ClInclude Include="Containers\BinarySearchTree\BSTSetNode.h">
+      <Filter>Containers\BinarySearchTree</Filter>
+    </ClInclude>
+    <ClInclude Include="Containers\DoublyLinkedList\DoublyLinkedList.h">
+      <Filter>Containers\DoublyLinkedList</Filter>
+    </ClInclude>
+    <ClInclude Include="Containers\DoublyLinkedList\DoublyLinkedListNode.h">
+      <Filter>Containers\DoublyLinkedList</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
