@@ -12,6 +12,8 @@
 // CONDITIONS OF ANY KIND, either express or implied. See the License for the
 // specific language governing permissions and limitations under the License.
 
+#pragma warning ( disable : 6011 )
+
 #ifndef RAPIDJSON_ITOA_
 #define RAPIDJSON_ITOA_
 

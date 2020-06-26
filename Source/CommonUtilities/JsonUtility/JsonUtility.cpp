@@ -1,4 +1,6 @@
 #include "JsonUtility.h"
+#include "RapidJSON/ostreamwrapper.h"
+#include "RapidJSON/prettywriter.h"
 #include <fstream>
 #include <assert.h>
 #include <iostream>
@@ -9,8 +11,19 @@ namespace CommonUtilities
 		Open(aFilePath, aCreateIfNotFound);
 	}
 
+	const rapidjson::Value& JsonUtility::operator[](const char* aMemberName) const
+	{
+		return myJsonDocument[aMemberName];
+	}
+
+	rapidjson::Value& JsonUtility::operator[](const char* aMemberName)
+	{
+		return myJsonDocument[aMemberName];
+	}
+
 	bool JsonUtility::Open(const char* aFilePath, bool aCreateIfNotFound)
 	{
+		myFilePath = aFilePath;
 		std::ios::openmode openMode = std::ios::in;
 		if (aCreateIfNotFound)
 		{
@@ -30,16 +43,35 @@ namespace CommonUtilities
 		if (myJsonDocument.HasParseError())
 		{
 			rapidjson::ParseErrorCode error = myJsonDocument.GetParseError();
+			if (aCreateIfNotFound && error == rapidjson::ParseErrorCode::kParseErrorDocumentEmpty)
+			{
+				myJsonDocument.SetObject();
+				return true;
+			}
 			std::cout << "Error: "<< ParseErrorCode(error) << aFilePath << std::endl;
 			return false;
 		}
 		return true;
 	}
 
-	// Does not deallocate memory. The capacity stays the same.
 	void JsonUtility::Clear()
 	{
 		myJsonDocument.RemoveAllMembers();
+	}
+
+	void JsonUtility::Delete()
+	{
+		Clear();
+		std::remove(myFilePath.c_str());
+	}
+
+	void JsonUtility::SaveDocument(const std::string& aFilePath)
+	{
+		std::ofstream ofs(aFilePath.empty() ? myFilePath : aFilePath);
+		rapidjson::OStreamWrapper osw(ofs);
+
+		rapidjson::PrettyWriter<rapidjson::OStreamWrapper> writer(osw);
+		myJsonDocument.Accept(writer);
 	}
 
 	void JsonUtility::IterateOverArray(const char* aMemberName, std::function<void(const rapidjson::Value& anElement)> aCallback)
@@ -68,6 +100,16 @@ namespace CommonUtilities
 	std::string JsonUtility::GetParseErrorMessage() const
 	{
 		return ParseErrorCode(myJsonDocument.GetParseError());
+	}
+
+	size_t JsonUtility::GetErrorOffset() const
+	{
+		return myJsonDocument.GetErrorOffset();
+	}
+
+	rapidjson::Document& JsonUtility::GetDocument()
+	{
+		return myJsonDocument;
 	}
 
 	const char* JsonUtility::ParseErrorCode(rapidjson::ParseErrorCode aCode) const
@@ -113,5 +155,10 @@ namespace CommonUtilities
 		default:
 			return "Error code not defined.";
 		}
+	}
+
+	bool JsonUtility::HasMember(const char* aMemberName) const
+	{
+		return myJsonDocument.HasMember(aMemberName);
 	}
 }
