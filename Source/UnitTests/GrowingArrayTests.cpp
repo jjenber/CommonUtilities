@@ -3,6 +3,7 @@
 #include <Collections/GrowingArray.h>
 #include <string>
 #include <memory>
+#include <vector>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace CommonUtilities;
@@ -1090,6 +1091,30 @@ namespace GrowingArrayTest
 			}
 			_CrtMemCheckpoint(&memEnd);
 			Assert::IsFalse(_CrtMemDifference(&memDiff, &memStart, &memEnd), L"There is a memory leak!");
+		}
+	};
+	struct TestObj
+	{
+		float f = 10.f;
+		int i = 2;
+	};
+	TEST_CLASS(Iterators)
+	{
+		TEST_METHOD(RangedBasedLoop)
+		{
+			GrowingArray<TestObj, int> arr(10);
+			arr.Add(TestObj());
+			arr.Add(TestObj());
+			arr.Add(TestObj());
+			arr.Add(TestObj());
+			arr[3].i = 3;
+			for (auto& b : arr)
+			{
+				b.f = 22.f;
+				int ref = b.i;
+				ref;
+			}
+			Assert::AreEqual(3, (*(arr.begin() + 3)).i);
 		}
 	};
 }

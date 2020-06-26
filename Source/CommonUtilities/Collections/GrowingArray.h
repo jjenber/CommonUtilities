@@ -3,12 +3,59 @@
 
 namespace CommonUtilities
 {
-	template<typename T, typename SizeType = unsigned short>
+	template<typename T, typename SizeType = unsigned int>
 	class GrowingArray
 	{
 		template<class U> friend class Queue;
 		template<class U> friend class Stack;
 	public:
+		class Iterator
+		{
+			typedef GrowingArray<T, SizeType>* ContainerPtr;
+		public:
+			using difference_type = std::ptrdiff_t;
+			using value_type = T;
+			using pointer = T*;
+			using reference = T&;
+			using iterator_category = std::random_access_iterator_tag;
+
+			Iterator()										: myPtr(nullptr), myPos(0) {}
+			Iterator(ContainerPtr aPtr, SizeType aPosition = 0)	: myPtr(aPtr), myPos(static_cast<int>(aPosition)) {}
+			
+			reference       operator*()					  { return (*myPtr)[myPos]; }
+			const reference operator*() const			  { return (*myPtr)[myPos]; }
+			pointer         operator->()				  { return &((*myPtr)[myPos]); }
+			const pointer   operator->() const			  { return &((*myPtr)[myPos]); }
+			reference       operator[](int aOffset)		  { return (*myPtr)[myPos + aOffset]; }
+			const reference operator[](int aOffset) const { return (*myPtr)[myPos + aOffset]; }
+
+			Iterator& operator++() { ++myPos; return *this; }
+			Iterator& operator--() { --myPos; return *this; }
+			Iterator  operator++(int) { Iterator returnVal(*this); ++myPos; return returnVal; }
+			Iterator  operator--(int) { Iterator returnVal(*this); --myPos; return returnVal; }
+
+			Iterator& operator+=(int aOffset) { myPos += aOffset; return *this; }
+			Iterator& operator-=(int aOffset) { myPos -= aOffset; return *this; }
+
+			Iterator operator+(int aOffset)   const { Iterator retVal(*this); return retVal += aOffset; }
+			Iterator operator-(int aOffset)   const { Iterator retVal(*this); return retVal -= aOffset; }
+
+			difference_type operator-(Iterator const& aOther) const { return myPos - aOther.myPos; }
+
+			bool operator< (Iterator const& aOtherItr) const { return myPos < aOtherItr.myPos; }
+			bool operator<=(Iterator const& aOtherItr) const { return myPos <= aOtherItr.myPos; }
+			bool operator> (Iterator const& aOtherItr) const { return myPos > aOtherItr.myPos; }
+			bool operator>=(Iterator const& aOtherItr) const { return myPos >= aOtherItr.myPos; }
+			bool operator!=(const Iterator& aOtherItr) const { return myPos != aOtherItr.myPos; }
+			bool operator==(const Iterator& aOtherItr) const { return myPos == aOtherItr.myPos; }
+		private:
+			int myPos = 0;
+			ContainerPtr myPtr;
+		};
+
+		Iterator begin() { return Iterator(this); };
+		Iterator end() { return Iterator{ this, mySize }; };
+
 		GrowingArray();
 		GrowingArray(SizeType aReservedSize, bool aUseSafeModeFlag = true);
 		GrowingArray(const GrowingArray& aGrowingArray);

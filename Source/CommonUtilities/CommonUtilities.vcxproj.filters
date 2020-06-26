@@ -7,15 +7,6 @@
     <Filter Include="Algorithms\Pathfinding">
       <UniqueIdentifier>{da953aac-af71-41e3-bbc8-f76d035cd315}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Collections">
-      <UniqueIdentifier>{89a226f7-9cb7-4c04-9eca-d7dee51cc058}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Collections\BinarySearchTree">
-      <UniqueIdentifier>{239ba324-1bc2-449f-b524-d4d2579effbc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Collections\DoublyLinkedList">
-      <UniqueIdentifier>{05f0a52c-7e47-41bd-ad1e-dd15710b1d21}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Debugging">
       <UniqueIdentifier>{e8ccd60e-c510-4afd-bbc4-7201a1d49a48}</UniqueIdentifier>
     </Filter>
@@ -42,6 +33,15 @@
     </Filter>
     <Filter Include="StringUtility">
       <UniqueIdentifier>{c50d7b30-c003-4ccc-9b3b-b42882ae0575}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Containers">
+      <UniqueIdentifier>{89a226f7-9cb7-4c04-9eca-d7dee51cc058}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Containers\BinarySearchTree">
+      <UniqueIdentifier>{239ba324-1bc2-449f-b524-d4d2579effbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Containers\DoublyLinkedList">
+      <UniqueIdentifier>{05f0a52c-7e47-41bd-ad1e-dd15710b1d21}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -87,34 +87,34 @@
       <Filter>Algorithms\Pathfinding</Filter>
     </ClInclude>
     <ClInclude Include="Collections\BinarySearchTree\BSTSet.hpp">
-      <Filter>Collections\BinarySearchTree</Filter>
+      <Filter>Containers\BinarySearchTree</Filter>
     </ClInclude>
     <ClInclude Include="Collections\BinarySearchTree\BSTSetNode.h">
-      <Filter>Collections\BinarySearchTree</Filter>
+      <Filter>Containers\BinarySearchTree</Filter>
     </ClInclude>
     <ClInclude Include="Collections\DoublyLinkedList\DoublyLinkedList.h">
-      <Filter>Collections\DoublyLinkedList</Filter>
+      <Filter>Containers\DoublyLinkedList</Filter>
     </ClInclude>
     <ClInclude Include="Collections\DoublyLinkedList\DoublyLinkedListNode.h">
-      <Filter>Collections\DoublyLinkedList</Filter>
+      <Filter>Containers\DoublyLinkedList</Filter>
     </ClInclude>
     <ClInclude Include="Collections\GrowingArray.h">
-      <Filter>Collections</Filter>
+      <Filter>Containers</Filter>
     </ClInclude>
     <ClInclude Include="Collections\Heap.hpp">
-      <Filter>Collections</Filter>
+      <Filter>Containers</Filter>
     </ClInclude>
     <ClInclude Include="Collections\Queue.h">
-      <Filter>Collections</Filter>
+      <Filter>Containers</Filter>
     </ClInclude>
     <ClInclude Include="Collections\Stack.h">
-      <Filter>Collections</Filter>
+      <Filter>Containers</Filter>
     </ClInclude>
     <ClInclude Include="Collections\StaticArray.h">
-      <Filter>Collections</Filter>
+      <Filter>Containers</Filter>
     </ClInclude>
     <ClInclude Include="Collections\VectorOnStack.h">
-      <Filter>Collections</Filter>
+      <Filter>Containers</Filter>
     </ClInclude>
     <ClInclude Include="Debugging\DL_assert.h">
       <Filter>Debugging</Filter>
@@ -186,7 +186,7 @@
       <Filter>Algorithms</Filter>
     </ClInclude>
     <ClInclude Include="Collections\MinHeap.hpp">
-      <Filter>Collections</Filter>
+      <Filter>Containers</Filter>
     </ClInclude>
     <ClInclude Include="Math\Math.hpp">
       <Filter>Math</Filter>

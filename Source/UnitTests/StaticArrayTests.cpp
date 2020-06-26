@@ -59,6 +59,27 @@ namespace StaticArrays
 		}
 	};
 
+	TEST_CLASS(Iterators)
+	{
+		TEST_METHOD(RangeBased)
+		{
+			StaticArray<int, 3> anArray;
+			anArray[0] = 2;
+			anArray[1] = 4;
+			anArray[2] = 6;
+
+			Assert::AreEqual(2, anArray[0]);
+			Assert::AreEqual(4, anArray[1]);
+			Assert::AreEqual(6, anArray[2]);
+			Assert::AreNotEqual(2, anArray[1]);
+
+			for (auto i : anArray)
+			{
+				int r = i + 1;
+			}
+		}
+	};
+
 	TEST_CLASS(Insert)
 	{
 	public:

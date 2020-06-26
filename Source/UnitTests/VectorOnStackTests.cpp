@@ -314,4 +314,13 @@ namespace VectorsOnStack
 			Assert::AreEqual(2, vector[1]);
 		}
 	};
+	TEST_CLASS(Iterators)
+	{
+		TEST_METHOD(BeginOffset)
+		{
+			VectorOnStack<int, 3, int> vector{ 1, 2, 3 };
+			Assert::AreEqual(3, *(vector.begin() + 2));
+			int cap = vector.Capacity();
+		}
+	};
 }
