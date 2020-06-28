@@ -64,6 +64,8 @@ namespace CommonUtilities
 		inline const T& operator[](const int aIndex) const;
 		inline T& operator[](const int aIndex);
 		inline void Insert(const int aIndex, const T& aValue);
+		inline int Size() const { return SIZE; }
+
 
 	private:
 		T myData[SIZE] = { };
