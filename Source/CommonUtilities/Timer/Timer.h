@@ -13,6 +13,9 @@ namespace CommonUtilities
 		Timer& operator=(Timer&& aTimer) = delete;
 
 		void	Update();
+		
+		/// Resets the total time elapsed.
+		void	Reset();
 
 		float	GetDeltaTime() const;
 		double	GetTotalTime() const;

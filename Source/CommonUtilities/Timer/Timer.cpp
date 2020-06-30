@@ -4,8 +4,7 @@ namespace CommonUtilities
 {
 	Timer::Timer() : myDeltaTimeInSeconds(0), myTotalTimeInSeconds(0)
 	{
-		myStart = myClock.now();
-		myTimeStamp = myStart;
+		Reset();
 	}
 
 	void Timer::Update()
@@ -17,6 +16,12 @@ namespace CommonUtilities
 		myTotalTimeInSeconds = static_cast<double>(total.count()) * 0.000001;
 		
 		myTimeStamp = myClock.now();
+	}
+
+	void Timer::Reset()
+	{
+		myStart = myClock.now();
+		myTimeStamp = myStart;
 	}
 
 	float Timer::GetDeltaTime() const
