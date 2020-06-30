@@ -78,6 +78,9 @@
     <ClCompile Include="StringUtility\StringUtility.cpp">
       <Filter>StringUtility</Filter>
     </ClCompile>
+    <ClCompile Include="Input\Gamepad.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Algorithms\Pathfinding\AStar.h">
@@ -196,6 +199,9 @@
     </ClInclude>
     <ClInclude Include="Containers\DoublyLinkedList\DoublyLinkedListNode.h">
       <Filter>Containers\DoublyLinkedList</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\Gamepad.h">
+      <Filter>Input</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

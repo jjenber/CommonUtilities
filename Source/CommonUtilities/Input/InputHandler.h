@@ -1,6 +1,14 @@
 #pragma once
+
 #include <wtypes.h>
 #include <bitset>
+#include <functional>
+#include <array>
+#include <vector>
+
+#include "Gamepad.h"
+
+#include "../Math/Vector2.h" // Also change typedefs in class name scope.
 
 namespace CommonUtilities
 {
@@ -56,7 +64,7 @@ namespace CommonUtilities
 		NumPadComma,
 		Comma,
 		Period,
-		UnderScore,
+		UnderScore, // (_ -) underscore/minus.
 		LessThan,
 		Nr_0,
 		Nr_1,
@@ -106,6 +114,14 @@ namespace CommonUtilities
 
 	class InputHandler
 	{
+		////////////////////////////////////////////////////
+		// Change these if the Inputhandler should use another vector class.
+		using Vector2f = CommonUtilities::Vector2<float>;
+		using Vector2i = CommonUtilities::Vector2<int>;
+		////////////////////////////////////////////////////
+		
+		typedef std::function<void(int aID, bool aIsConnected)> GamepadConnectionChangedFunc;
+
 	public:
 		InputHandler();
 		InputHandler(const InputHandler&)			 = delete;
@@ -124,25 +140,47 @@ namespace CommonUtilities
 		bool GetMouseButtonDown(MouseButton aButton) const;
 		bool GetMouseButtonUp(MouseButton aButton) const;
 
-		int GetMouseX() const;
-		int GetMouseY() const;
-		int GetMouseDeltaX() const;
-		int GetMouseDeltaY() const;
+		const Vector2i& GetMousePosition() const;
+		const Vector2i& GetMouseDelta() const;
 		int GetMouseWheelDelta() const;
 
-		void SetCursorPosition(HWND aWindow, const int aX, const int aY);
+		/// Add a function that will be called each time a supported(!) gamepad is connected/disconnected. 
+		/// The signature is void(int aID, bool aIsConnected).
+		void SetGamepadConnectionChangedCallback(GamepadConnectionChangedFunc aCallback);
 
+		// Returns the ID of the first connected Gamepad. Returns -1 if no one is connected.
+		int GetConnectedGamepadID() const;
+
+		/// Returns a single Gamepad with the provided ID.
+		Gamepad& GetGamepad(const int aID);
+		
+		/// Returns the container with all gamepads.
+		std::array<Gamepad, MAX_NUM_GAMEPADS>& GetGamepads();
+
+		/// Sets the cursor position in pixel space relative to the Window.
+		void SetCursorPosition(HWND aWindow, const int aX, const int aY);
+		/// Sets the cursor position in pixel space relative to the monitor screen. GetMousePosition() will still return the position relative to the window.
+		void SetCursorPositionRelativeToMonitor(HWND aWindow, const int aX, const int aY);
 	private:
+		void UpdateGamepadStates();
+		void ClearGamepadStates();
+
 		KeyCode VkToKeyCode(WPARAM aWParam) const;
-		int myMouseX;
-		int myMouseXLast;
-		int myMouseY;
-		int myMouseYLast;
+		
+		Vector2i myMousePosition;
+		Vector2i myMousePositionLast;
+		Vector2i myMousePositionDelta;
+
 		int myMouseWheelDelta;
+		
 		std::bitset<static_cast<size_t>(KeyCode::Count)> myKeyboardStateLast;
 		std::bitset<static_cast<size_t>(KeyCode::Count)> myKeyboardState;
 		std::bitset<static_cast<size_t>(MouseButton::Count)> myMouseState;
 		std::bitset<static_cast<size_t>(MouseButton::Count)> myMouseStateLast;
+		
+		std::array<Gamepad, MAX_NUM_GAMEPADS> myGamepads;
+
+		GamepadConnectionChangedFunc myGamepadConnectionChangedCallback;
 	};
 }
 

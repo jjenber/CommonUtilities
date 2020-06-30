@@ -3,15 +3,20 @@
 #include <iostream>
 #include <string>
 
+
 namespace CommonUtilities
 {
-	InputHandler::InputHandler() : myMouseWheelDelta(0), myMouseX(0), myMouseXLast(0), myMouseY(0), myMouseYLast(0)
+	InputHandler::InputHandler() : myMouseWheelDelta(0)
 	{
+		for (int i = 0; i < myGamepads.size(); i++)
+		{
+			myGamepads[i].Init(i);
+		}
 	}
+
 	bool InputHandler::UpdateEvents(UINT aMessage, WPARAM aWParam, LPARAM aLParam)
 	{
 		MSG msg{ 0 };
-
 		switch (aMessage)
 		{
 		case WM_KILLFOCUS:
@@ -19,14 +24,16 @@ namespace CommonUtilities
 			// Reset everything if window loses focus.
 			myMouseState.reset();
 			myKeyboardState.reset();
+			ClearGamepadStates();
 			ClearFrame();
 			return false;
 		}
 		// Mouse
 		case WM_MOUSEMOVE:
 		{
-			myMouseX = GET_X_LPARAM(aLParam);
-			myMouseY = GET_Y_LPARAM(aLParam);
+			myMousePosition.x = GET_X_LPARAM(aLParam);
+			myMousePosition.y = GET_Y_LPARAM(aLParam);
+			myMousePositionDelta = myMousePosition - myMousePositionLast;
 			break;
 		}
 		case WM_LBUTTONDOWN:
@@ -90,9 +97,10 @@ namespace CommonUtilities
 	{
 		myKeyboardStateLast = myKeyboardState;
 		myMouseStateLast    = myMouseState;
-		myMouseXLast	    = myMouseX;
-		myMouseYLast	    = myMouseY;
+		myMousePositionLast = myMousePosition;
 		myMouseWheelDelta   = 0;
+
+		UpdateGamepadStates();
 	}
 
 	bool InputHandler::GetKey(KeyCode aKeyCode) const
@@ -102,6 +110,7 @@ namespace CommonUtilities
 
 	bool InputHandler::GetKeyDown(KeyCode aKeyCode) const
 	{
+		
 		const size_t index = static_cast<size_t>(aKeyCode);
 		return myKeyboardState[index] && (myKeyboardStateLast[index] == false);
 	}
@@ -129,29 +138,43 @@ namespace CommonUtilities
 		return (myMouseState[index] == false) && myMouseStateLast[index];
 	}
 
-	int InputHandler::GetMouseX() const
+	const InputHandler::Vector2i& InputHandler::GetMousePosition() const
 	{
-		return myMouseX;
+		return myMousePosition;
 	}
 
-	int InputHandler::GetMouseY() const
+	const InputHandler::Vector2i& InputHandler::GetMouseDelta() const
 	{
-		return myMouseY;
-	}
-
-	int InputHandler::GetMouseDeltaX() const
-	{
-		return myMouseX - myMouseXLast;
-	}
-
-	int InputHandler::GetMouseDeltaY() const
-	{
-		return myMouseY - myMouseYLast;
+		return myMousePositionDelta;
 	}
 
 	int InputHandler::GetMouseWheelDelta() const
 	{
 		return myMouseWheelDelta;
+	}
+
+	void InputHandler::SetGamepadConnectionChangedCallback(GamepadConnectionChangedFunc aCallback)
+	{
+		myGamepadConnectionChangedCallback = aCallback;
+	}
+
+	int InputHandler::GetConnectedGamepadID() const
+	{
+		for (int i = 0; i < myGamepads.size(); i++)
+		{
+			if (myGamepads[i].myIsConnected) return i;
+		}
+		return -1;
+	}
+
+	Gamepad& InputHandler::GetGamepad(const int aID)
+	{
+		return myGamepads[aID];
+	}
+
+	std::array<Gamepad, MAX_NUM_GAMEPADS>& InputHandler::GetGamepads()
+	{
+		return myGamepads;
 	}
 
 	void InputHandler::SetCursorPosition(HWND aWindow, const int aX, const int aY)
@@ -163,9 +186,43 @@ namespace CommonUtilities
 		const int newY = wndRect.top + aY;
 
 		SetCursorPos(newX, newY);
+		myMousePosition.x = aX;
+		myMousePosition.y = aY;
+	}
 
-		myMouseX = aX;
-		myMouseY = aY;
+	void InputHandler::SetCursorPositionRelativeToMonitor(HWND aWindow, const int aX, const int aY)
+	{
+		RECT wndRect{ 0 };
+		GetWindowRect(aWindow, &wndRect);
+
+		const int newX = wndRect.left + aX;
+		const int newY = wndRect.top + aY;
+
+		SetCursorPos(aX, aY);
+		myMousePosition.x = newX;
+		myMousePosition.y = newY;
+	}
+
+	void InputHandler::UpdateGamepadStates()
+	{
+		for (int i = 0; i < myGamepads.size(); i++)
+		{
+			bool wasConnected = myGamepads[i].myIsConnected;
+			bool connectionChanged = wasConnected != myGamepads[i].UpdateState();
+			
+			if (myGamepadConnectionChangedCallback != nullptr && connectionChanged)
+			{
+				myGamepadConnectionChangedCallback(i, !wasConnected);
+			}
+		}
+	}
+
+	void InputHandler::ClearGamepadStates()
+	{
+		for (Gamepad& gamepad : myGamepads)
+		{
+			gamepad.ClearState();
+		}
 	}
 
 	KeyCode InputHandler::VkToKeyCode(WPARAM aWParam) const
