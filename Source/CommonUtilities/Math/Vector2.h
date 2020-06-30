@@ -26,6 +26,9 @@ namespace CommonUtilities
 		Vector2<T>(const T& aX, const T& aY);
 		Vector2<T>(const Vector2<T>& aVector) = default;
 		
+		template <class U>
+		explicit operator Vector2<U>() { return { static_cast<U>(myX), static_cast<U>(myY) }; }
+
 		Vector2<T>& operator=(const Vector2<T>& aVector2) = default;
 		
 		template <class OtherType>
