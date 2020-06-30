@@ -1,5 +1,6 @@
 #pragma once
 #include <math.h>
+#include <iostream>
 #ifdef _DEBUG
 #include <cassert>
 #endif // _DEBUG
@@ -44,6 +45,9 @@ namespace CommonUtilities
 		T Dot(const Vector2<T>& aVector) const;
 		
 		void Set(const T& aX, const T& aY);
+
+		template <class U>
+		friend std::ostream& operator<<(std::ostream& os, const Vector2<U>& aVector);
 	};
 
 	typedef Vector2<float> Vector2f;
@@ -212,6 +216,11 @@ namespace CommonUtilities
 		const T inv = (1 / aScalar);
 		aVector.x *= inv;
 		aVector.y *= inv;
+	}
+	template <class T>
+	std::ostream& operator<<(std::ostream& os, const Vector2<T>& aVector)
+	{
+		return os << "{ X: " << aVector.x << " Y: " << aVector.y << " }";
 	}
 #pragma endregion OperatorDefinitions
 }
