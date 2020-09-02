@@ -1,44 +1,113 @@
 #pragma once
-#include <fstream>
-#include <stdarg.h>
+
 #include <string>
-#include "DL_assert.h"
+#include <iostream>
+#include <fstream>
+#include <map>
+#include <string>
 
-#define EXPAND(_ARG) _ARG
-#define GET_DL_ASSERT(_1,_2,NAME,...) NAME
-#define DL_ASSERT(...) EXPAND(GET_DL_ASSERT(__VA_ARGS__, DL_ASSERT_M_STATEMENT, DL_ASSERT_M)(__VA_ARGS__))
-#define DL_ASSERT_M(_ASSERTMESSAGE) Debug::GetInstance()->AssertMessage(false, _ASSERTMESSAGE, DL_META_INFO_CSTR)
-#define DL_ASSERT_M_STATEMENT(_STATEMENT, _ASSERTMESSAGE) Debug::GetInstance()->AssertMessage(_STATEMENT, _ASSERTMESSAGE, DL_META_INFO_CSTR)
+extern "C"
+{
+#include <corecrt.h>
 
-#define DL_PRINT(_PRINTMESSAGE)      (Debug::GetInstance()->PrintMessage(_PRINTMESSAGE))
-#define DL_DEBUG(_PRINTMESSAGE, ...) (Debug::GetInstance()->PrintMessageFormat(_PRINTMESSAGE, __VA_ARGS__))
-#define DL_PRINT_NO_FORMATTING(_PRINTMESSAGE) (Debug::GetInstance()->PrintMessageNoFormatting(_PRINTMESSAGE))
+	_ACRTIMP void __cdecl _wassert(
+		_In_z_ wchar_t const* _Message,
+		_In_z_ wchar_t const* _File,
+		_In_   unsigned       _Line
+	);
 
-#define DL_META_INFO_CSTR (std::string(__FUNCTION__) + "() (at " + __FILE__ + ":" + std::to_string(__LINE__) + ")").c_str()
-#define LOG_TIME_FORMAT "%H:%M:%S"
+#define DL_ASSERT(aExpression) (void)(																										\
+		(!!(aExpression)) ||																				/*If false, print and crash*/	\
+			(DL_Debug::Debug::GetInstance()->AssertMessage(__FILE__,__LINE__,__FUNCTION__, #aExpression),	/*Assert Message*/				\
+			_wassert(_CRT_WIDE(#aExpression), _CRT_WIDE(__FILE__), (unsigned)(__LINE__))					/*Crash program*/				\
+			,0)																								/*Evaluates this*/				\
+	)
+
+#define DL_CRASH(aMessage) (void)(																										\
+		(DL_Debug::Debug::GetInstance()->AssertMessage(__FILE__,__LINE__,__FUNCTION__, #aMessage),		/*Assert Message*/				\
+		_wassert(_CRT_WIDE(#aMessage), _CRT_WIDE(__FILE__), (unsigned)(__LINE__))						/*Crash program*/				\
+		,0)																								/*Evaluates this*/				\
+	)
+};
+
+#define DL_DEBUG( ... )  DL_Debug::Debug::GetInstance()->DebugMessage(__FILE__, __LINE__,__FUNCTION__,__VA_ARGS__);
+
+#define DL_PRINT(aMessage)  DL_Debug::Debug::GetInstance()->PrintMessage(aMessage);
+
+#define DL_PRINT_CALLSTACK(aMessage)  DL_Debug::Debug::GetInstance()->PrintCallstackMessage(aMessage);
+
+#define DL_WRITELOG(log, ...)  DL_Debug::Debug::GetInstance()->WriteLog(log,__VA_ARGS__);
+
+#ifdef USE_FILTERLOG  
+#define ENGINE_ERROR_LOG(...) DL_WRITELOG("Engine", "ERROR", CONSOLE_TEXT_COLOR_RED, __VA_ARGS__)
+#define RESOURCE_ERROR_LOG(...) DL_WRITELOG("Resource","ERROR", CONSOLE_TEXT_COLOR_RED, __VA_ARGS__)
+#define GAMEPLAY_ERROR_LOG(...) DL_WRITELOG("Gameplay","ERROR", CONSOLE_TEXT_COLOR_RED, __VA_ARGS__)
+
+#define ENGINE_INFO_LOG(...) DL_WRITELOG("Engine", "INFO", CONSOLE_TEXT_COLOR_GREEN, __VA_ARGS__)
+#define RESOURCE_INFO_LOG(...) DL_WRITELOG("Resource","INFO", CONSOLE_TEXT_COLOR_BLUE, __VA_ARGS__)
+#define GAMEPLAY_INFO_LOG(...) DL_WRITELOG("Gameplay","INFO", CONSOLE_TEXT_COLOR_YELLOW, __VA_ARGS__)
+
+#define ENGINE_ERROR_LOG_RETURN_FALSE_IF_FAILED(result, ...)  if(FAILED(result)){ENGINE_ERROR_LOG(__VA_ARGS__); return false;}
+#define RESOURCE_ERROR_LOG_RETURN_FALSE_IF_FAILED(result,...) if(FAILED(result)){RESOURCE_ERROR_LOG(__VA_ARGS__); return false;}
+#define GAMEPLAY_ERROR_LOG_RETURN_FALSE_IF_FAILED(result,...) if(FAILED(result)){GAMEPLAY_ERROR_LOG(__VA_ARGS__); return false;}
+
+#define ENGINE_ERROR_LOG_RETURN_NULLPTR_IF_FAILED(result, ...)  if(FAILED(result)){ENGINE_ERROR_LOG(__VA_ARGS__); return nullptr;}
+#define RESOURCE_ERROR_LOG_RETURN_NULLPTR_IF_FAILED(result,...) if(FAILED(result)){RESOURCE_ERROR_LOG(__VA_ARGS__); return nullptr;}
+#define GAMEPLAY_ERROR_LOG_RETURN_NULLPTR_IF_FAILED(result,...) if(FAILED(result)){GAMEPLAY_ERROR_LOG(__VA_ARGS__); return nullptr;}
+
+#else
+#define ENGINE_ERROR_LOG(...) 
+#define RESOURCE_ERROR_LOG(...)
+#define GAMEPLAY_ERROR_LOG(...)
+#define ENGINE_INFO_LOG(...)
+#define RESOURCE_INFO_LOG(...)
+#define GAMEPLAY_INFO_LOG(...)
+
+#define ENGINE_ERROR_LOG_RETURN_FALSE_IF_FAILED(result, ...) 
+#define RESOURCE_ERROR_LOG_RETURN_FALSE_IF_FAILED(result,...)
+#define GAMEPLAY_ERROR_LOG_RETURN_FALSE_IF_FAILED(result,...)
+#define ENGINE_ERROR_LOG_RETURN_NULLPTR_IF_FAILED(result, ...) 
+#define RESOURCE_ERROR_LOG_RETURN_NULLPTR_IF_FAILED(result,...)
+#define GAMEPLAY_ERROR_LOG_RETURN_NULLPTR_IF_FAILED(result,...)
+#endif
+
+#define CONSOLE_TEXT_COLOR_GREEN 10
+#define CONSOLE_TEXT_COLOR_BLUE 11
+#define CONSOLE_TEXT_COLOR_RED 12
+#define CONSOLE_TEXT_COLOR_YELLOW 14
+#define CONSOLE_TEXT_COLOR_WHITE 15
 
 namespace DL_Debug
 {
 	class Debug
 	{
 	public:
-		static Debug*		GetInstance();
-		static void			Create(const std::string& aFile = "DebugLogger.txt");
-		static void			Destroy();
+		static bool Create();
+		static bool Destroy();
+		static Debug* GetInstance();
 
-		void				AssertMessage(bool aStatement, const char* aFileName, int aLine, const char* aFunctionName, const char* aMessage);
-		void				AssertMessage(bool aStatement, const char* aMessage, const char* aDLMetaInfo);
-		void				PrintMessage(const char* aMessage);
-		void				PrintMessageFormat(const char* aMessage, ...);
-		void				PrintMessageNoFormatting(const char* aString);
-		void				DebugMessage(const int aLine, const char* aFileName, const char* aFormattedString, ...);
+		void AssertMessage(const char* aFileName, int aLine, const char* aFunctionName, const char* aString);
+		void DebugMessage(const char* aFile, const int aLine, const char* aFileName, const char* aFormattedString, ...);
+		void PrintMessage(const char* aString);
+		void PrintCallstackMessage(const char* aString);
+		void WriteLog(const char* aLog, const char* aType, const int aConsoleColor, const char* aFormat...);
+
+		void ActivateFilterLog(const ::std::string& aLogName);
+		void DeactivateFilterLog(const ::std::string& aLogName);
+
 	private:
-		void				PrintTimeStamp() const;
-		void				PrintMessageFormatInternal(const char* aMessage, va_list aArgsList);
+		Debug(::std::string aDateAndTimeString);
+		~Debug();
 
-		Debug()				= default;
-		~Debug()			= default;
-		static Debug*		ourInstance;
-		std::ofstream		myFile;
+		void SetConsoleColor(int aColor);
+
+		static Debug* ourInstance;
+		static ::std::ofstream ourGeneralLog;
+		static ::std::map<::std::string, ::std::ofstream> ourFilterLogs;
+
+#ifdef _DEBUG
+		bool myShouldDebugLogEntry = false;
+		::std::string myLogEntryToDebug;
+#endif
 	};
 }
